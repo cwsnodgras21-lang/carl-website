@@ -64,7 +64,7 @@ function Via({ text }: { text: string }) {
   return (
     <div data-via className="relative flex flex-col justify-center">
       <p className="mb-3 text-sm leading-snug text-foreground/85">{text}</p>
-      <span aria-hidden="true" className="relative block h-px bg-accent">
+      <span aria-hidden="true" data-via-line className="relative block h-px bg-accent">
         <span className="absolute -left-[3px] top-1/2 size-[7px] -translate-y-1/2 border border-accent bg-background" />
         <span className="absolute -right-px top-1/2 size-0 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-accent" />
       </span>

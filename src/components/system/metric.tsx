@@ -74,7 +74,7 @@ export function MetricInline({ metric }: { metric: Metric }) {
  */
 export function MetricMeta({ metric, className }: { metric: Metric; className?: string }) {
   return (
-    <p className={cn("flex flex-wrap items-baseline gap-x-2 text-base", className)}>
+    <p data-meta className={cn("flex flex-wrap items-baseline gap-x-2 text-base", className)}>
       <span className="font-semibold text-foreground">
         <MetricFigure metric={metric} />
       </span>

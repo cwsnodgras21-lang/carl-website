@@ -52,16 +52,16 @@ function Mechanical() {
       <rect x={50} y={32} width={100} height={56} strokeWidth={1.75} />
       <circle cx={100} cy={60} r={14} strokeWidth={1.5} />
       {/* overall width dimension */}
-      <path d="M50 30 V12 M150 30 V12" strokeWidth={0.75} />
-      <path d="M50 16 H150" strokeWidth={0.75} />
-      <path d="M50 16 l6 -2.5 v5 z M150 16 l-6 -2.5 v5 z" className="fill-technical" stroke="none" />
-      <text x={100} y={10} textAnchor="middle" className="fill-technical stroke-none font-mono" style={label}>
+      <path data-dim d="M50 30 V12 M150 30 V12" strokeWidth={0.75} />
+      <path data-dim d="M50 16 H150" strokeWidth={0.75} />
+      <path data-annotation d="M50 16 l6 -2.5 v5 z M150 16 l-6 -2.5 v5 z" className="fill-technical" stroke="none" />
+      <text data-annotation x={100} y={10} textAnchor="middle" className="fill-technical stroke-none font-mono" style={label}>
         4.000
       </text>
       {/* hole callout: leader from the diameter note to the hole edge */}
-      <path d="M109.9 69.9 L130 100 H136" strokeWidth={0.75} />
-      <path d="M109.9 69.9 L115.6 72.9 L111.8 76.1 Z" className="fill-technical" stroke="none" />
-      <text x={139} y={103} className="fill-technical stroke-none font-mono" style={label}>
+      <path data-dim d="M109.9 69.9 L130 100 H136" strokeWidth={0.75} />
+      <path data-annotation d="M109.9 69.9 L115.6 72.9 L111.8 76.1 Z" className="fill-technical" stroke="none" />
+      <text data-annotation x={139} y={103} className="fill-technical stroke-none font-mono" style={label}>
         Ø1.125
       </text>
     </g>
@@ -75,11 +75,11 @@ function Controls() {
       <path data-signal d="M0 60 H8 M192 60 H200" />
       <path data-signal d="M8 60 H46 M60 60 H86 M100 60 H140 M166 60 H192" />
       {/* normally open contact */}
-      <path d="M46 48 V72 M60 48 V72" strokeWidth={1.5} />
+      <path data-logic="input" d="M46 48 V72 M60 48 V72" strokeWidth={1.5} />
       {/* normally closed contact */}
-      <path d="M86 48 V72 M100 48 V72 M83 72 L103 48" strokeWidth={1.5} />
+      <path data-logic="interlock" d="M86 48 V72 M100 48 V72 M83 72 L103 48" strokeWidth={1.5} />
       {/* coil */}
-      <path d="M146 47 Q136 60 146 73 M160 47 Q170 60 160 73" strokeWidth={1.5} />
+      <path data-logic="output" d="M146 47 Q136 60 146 73 M160 47 Q170 60 160 73" strokeWidth={1.5} />
       <path d="M140 60 H141 M165 60 H166" />
       {[
         ["X1", 53],
@@ -99,11 +99,11 @@ function Software() {
   return (
     <g data-glyph="software">
       <path data-signal d="M0 60 H28 M56 60 H76 V32 H96 M76 60 V88 H96 M124 32 H146 V60 M124 88 H146 V60 M178 60 H200" />
-      <rect x={28} y={48} width={28} height={24} strokeWidth={1.5} />
-      <rect x={96} y={22} width={28} height={20} strokeWidth={1.25} />
-      <rect x={96} y={78} width={28} height={20} strokeWidth={1.25} />
-      <ellipse cx={162} cy={48} rx={16} ry={5} strokeWidth={1.25} />
-      <path d="M146 48 V72 A16 5 0 0 0 178 72 V48" strokeWidth={1.25} />
+      <rect data-data-node x={28} y={48} width={28} height={24} strokeWidth={1.5} />
+      <rect data-data-node x={96} y={22} width={28} height={20} strokeWidth={1.25} />
+      <rect data-data-node x={96} y={78} width={28} height={20} strokeWidth={1.25} />
+      <ellipse data-data-node cx={162} cy={48} rx={16} ry={5} strokeWidth={1.25} />
+      <path data-data-node d="M146 48 V72 A16 5 0 0 0 178 72 V48" strokeWidth={1.25} />
       <text x={28} y={40} className="fill-technical stroke-none font-mono" style={label}>
         API
       </text>

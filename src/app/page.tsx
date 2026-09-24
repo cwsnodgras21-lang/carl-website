@@ -1,3 +1,4 @@
+import { MotionRoot } from "@/components/motion/motion-root";
 import { ClosingScene } from "@/components/scenes/closing-scene";
 import { CustomerOperationsScene } from "@/components/scenes/customer-operations-scene";
 import { HeroScene } from "@/components/scenes/hero-scene";
@@ -29,6 +30,7 @@ export default function HomePage() {
       <ProcessScene />
       <ThinkingScene />
       <ClosingScene />
+      <MotionRoot />
     </>
   );
 }

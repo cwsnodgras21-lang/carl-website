@@ -22,18 +22,20 @@ export function ClosingScene() {
         <Display id="closing-title" size="xl" className="max-w-[14ch]">
           {site.statement}
         </Display>
-        <Display as="p" size="md" className="mt-10 text-accent">
-          {closing.question}
-        </Display>
-        <ul className="mt-14 flex flex-col items-start gap-5">
-          {[links.nolturn, links.linkedin, links.contact].map((link, i) => (
-            <li key={link.label}>
-              <ActionLink href={link.href} variant={i === 0 ? "primary" : "quiet"}>
-                {link.label}
-              </ActionLink>
-            </li>
-          ))}
-        </ul>
+        <div data-closing-reveal>
+          <Display as="p" size="md" className="mt-10 text-accent">
+            {closing.question}
+          </Display>
+          <ul className="mt-14 flex flex-col items-start gap-5">
+            {[links.nolturn, links.linkedin, links.contact].map((link, i) => (
+              <li key={link.label}>
+                <ActionLink href={link.href} variant={i === 0 ? "primary" : "quiet"}>
+                  {link.label}
+                </ActionLink>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </SceneShell>
   );

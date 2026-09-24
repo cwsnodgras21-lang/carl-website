@@ -47,9 +47,10 @@ export function NolTurnScene() {
                 </h3>
                 <p className="mt-5 text-lg leading-relaxed text-muted">{inventory.summary}</p>
                 {inventory.capabilities && (
-                  <ul className="mt-8 grid grid-cols-2 gap-x-6 text-base text-foreground/85">
+                  <ul data-capabilities className="mt-8 grid grid-cols-2 gap-x-6 text-base text-foreground/85">
                     {inventory.capabilities.map((capability) => (
-                      <li key={capability} className="border-t border-border py-2.5">
+                      <li key={capability} className="relative py-2.5">
+                        <span aria-hidden="true" data-cap-line className="absolute inset-x-0 top-0 h-px bg-border" />
                         {capability}
                       </li>
                     ))}

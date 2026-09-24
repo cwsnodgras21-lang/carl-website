@@ -144,7 +144,7 @@ function ScaleWide() {
 
       {/* Spine: straight down from the junction. The largest scope figure
           hangs here first; the operational improvements branch below it. */}
-      <div className="relative ml-0 border-l border-technical pb-2 pl-10" style={{ marginTop: BUS_Y }}>
+      <div data-spine className="relative ml-0 border-l border-technical pb-2 pl-10" style={{ marginTop: BUS_Y }}>
         <div className="pt-8" data-reveal="1">
           <ScopeFigure metric={metrics[first]} tap />
         </div>

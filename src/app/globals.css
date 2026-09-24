@@ -152,6 +152,41 @@
   }
 }
 
+/* ─── Motion pre-paint states ─────────────────────────────────────────────────
+ * Only while `html.motion` is set (see layout.tsx): the hero starts
+ * un-powered. The motion runtime animates to the static state with inline
+ * styles; without it (reduced motion, no JS, failed load) none of this
+ * applies and the static page is the whole experience.
+ */
+html.motion #top [data-connection] [data-origin] {
+  transform: scale(0);
+}
+html.motion #top [data-connection] [data-wire] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+html.motion #top [data-connection] [data-terminal] {
+  opacity: 0;
+}
+html.motion #top [data-connection] [data-drop] {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+html.motion #top #hero-title {
+  clip-path: inset(0% 100% -20% 0%);
+}
+html.motion #top [data-hero-reveal] {
+  opacity: 0;
+}
+
+/* SVG parts that motion scales or moves do so around their own box. */
+svg [data-node],
+svg [data-junction],
+svg [data-motion-only] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 /* ─── Technical surfaces ───────────────────────────────────────────────── */
 
 @utility drafting-grid {
@@ -254,4 +289,51 @@
 @utility rail-method {
   width: 1px;
   background-image: linear-gradient(var(--technical), var(--technical));
+}
+
+/* Motion: things that grow along the signal grow from where it arrives. */
+html.motion-live [data-milestone] [data-rail],
+html.motion-live [data-rail-grow],
+html.motion-live [data-tap].block {
+  transform-origin: 50% 0;
+}
+html.motion-live [data-bus],
+html.motion-live [data-tap]:not(.block),
+html.motion-live [data-connector],
+html.motion-live [data-channel],
+html.motion-live [data-cap-line],
+html.motion-live [data-via-line],
+html.motion-live [data-guardrail] > span[aria-hidden],
+html.motion-live [data-connection] [data-wire] {
+  transform-origin: 0 50%;
+}
+
+/* ─── Micro-interactions ──────────────────────────────────────────────────
+ * Small, immediate, reversible. Disabled by the reduced-motion rule above
+ * (transitions collapse to ~0ms), never required to understand anything.
+ */
+
+/* Navigation: a copper conductor draws under the hovered/focused item. */
+.nav-link {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 3px;
+  transition:
+    background-size 180ms ease-out,
+    color 150ms ease-out;
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* System nodes acknowledge the pointer (decorative; no information lives
+   only on hover). */
+svg [data-node] > rect:last-of-type {
+  transition: stroke 150ms ease-out;
+}
+svg [data-node]:hover > rect:last-of-type {
+  stroke: var(--accent);
 }

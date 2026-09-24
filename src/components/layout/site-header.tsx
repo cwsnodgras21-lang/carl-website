@@ -60,7 +60,7 @@ export function SiteHeader() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "text-sm transition-colors hover:text-accent",
+                    "nav-link text-sm transition-colors hover:text-foreground",
                     item.href === "/#contact" ? "text-foreground" : "text-muted",
                   )}
                 >

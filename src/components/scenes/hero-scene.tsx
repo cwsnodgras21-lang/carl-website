@@ -24,12 +24,14 @@ export function HeroScene() {
         <Display as="h1" id="hero-title" size="xl" className="max-w-[14ch]">
           {site.statement}
         </Display>
-        <Body className="mt-8 md:mt-10">{site.summary}</Body>
-        <div className="mt-10 flex flex-wrap items-baseline gap-x-10 gap-y-5 md:mt-12">
-          <ActionLink href={hero.primaryCta.href} variant="primary">
-            {hero.primaryCta.label}
-          </ActionLink>
-          <ActionLink href={hero.secondaryCta.href}>{hero.secondaryCta.label}</ActionLink>
+        <div data-hero-reveal>
+          <Body className="mt-8 md:mt-10">{site.summary}</Body>
+          <div className="mt-10 flex flex-wrap items-baseline gap-x-10 gap-y-5 md:mt-12">
+            <ActionLink href={hero.primaryCta.href} variant="primary">
+              {hero.primaryCta.label}
+            </ActionLink>
+            <ActionLink href={hero.secondaryCta.href}>{hero.secondaryCta.label}</ActionLink>
+          </div>
         </div>
       </div>
     </SceneShell>

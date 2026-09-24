@@ -1,6 +1,6 @@
 # carl-website
 
-Carl Snodgrass's personal site. Next.js (App Router) · React · TypeScript · Tailwind CSS v4. Anime.js gets added in Phase 4 (narrative animation).
+Carl Snodgrass's personal site. Next.js (App Router) · React · TypeScript · Tailwind CSS v4 · Anime.js 4.
 
 ```bash
 npm install
@@ -17,10 +17,11 @@ npm run content:pending  # list content still waiting on Carl
 | `src/content/types.ts` | Content model. `pending("…")` marks a fact that hasn't been supplied; it renders as a visible annotation. |
 | `src/app/globals.css` | Design tokens: semantic colors, type scale, reduced-motion rules. Change the look here. |
 | `src/app/layout.tsx` | Font faces for the three typographic voices (display / sans / mono). |
-| `src/components/scenes/` | One file per homepage scene. Each scene owns its markup, visuals, and (later) its animation timeline. |
+| `src/components/scenes/` | One file per homepage scene: markup and static visuals. Its motion lives in the matching `src/motion/scenes/` module. |
 | `src/components/system/` | Shared visual language: scene rail, connection, layer drawings, system diagrams, metrics, screenshot slots. |
 | `src/components/ui/` | Typography, links, containers. |
 | `src/lib/motion.ts` | Motion levels and reduced-motion checks. |
+| `src/motion/` | **Narrative motion.** Scroll controller, helpers, one module per scene. Loaded lazily on the homepage only; never with reduced motion. |
 
 ## Adding content
 
@@ -29,3 +30,32 @@ npm run content:pending  # list content still waiting on Carl
 - **Metric:** add to `src/content/metrics.ts` and reference it by id. Don't restate a number anywhere else.
 
 Then commit and deploy.
+
+## Motion
+
+One signal travels the page: the hero powers on, the signal runs through the four
+disciplines, they converge into the system, the systems come online, and the circuit
+closes at the end.
+
+- `src/motion/runtime.ts` maps section ids to scene modules in `src/motion/scenes/`.
+- `src/motion/controller.ts` maps scroll position onto Anime.js timelines (one passive
+  scroll listener, layout cached, one update per frame). Tracks are **scrub** (progress
+  follows scroll) or **trigger** (plays once, quickly, when reached).
+- Scenes select `data-*` hooks in the static markup; anything that exists only for
+  motion (signal heads, energised traces, masks) is created at runtime and removed on
+  teardown. The static markup is the reduced-motion experience.
+- `src/components/motion/motion-root.tsx` loads the runtime after hydration and tears it
+  down if the visitor switches to reduced motion. A pre-paint class (`html.motion`, set
+  in `layout.tsx`) lets the hero start un-powered without a flash; it removes itself
+  after 1.5s if the runtime never starts.
+
+To inspect it locally:
+
+```bash
+npm install
+npm run build && npm start    # http://localhost:3000 — production build, real timings
+```
+
+Scroll slowly through the homepage; scroll back up to scrub any scene in reverse. To see
+the reduced-motion experience, turn on "Reduce motion" in your OS (or in Chrome DevTools →
+Rendering → Emulate CSS media feature `prefers-reduced-motion: reduce`) and reload.

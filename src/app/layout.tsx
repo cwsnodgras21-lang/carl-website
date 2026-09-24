@@ -40,12 +40,24 @@ export const viewport: Viewport = {
   themeColor: "#0e0e0c",
 };
 
+/*
+ * Pre-paint motion flag. Set before first paint so the hero can start in its
+ * un-powered state without the static version flashing first. Never set with
+ * reduced motion; removed after 1.5s if the motion runtime hasn't started, so
+ * a failed script load can't leave anything hidden.
+ */
+const motionFlag = `(function(){try{var d=document.documentElement;if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.classList.add("motion");setTimeout(function(){if(!d.classList.contains("motion-live"))d.classList.remove("motion")},1500)}catch(e){}})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: motionFlag }} />
+      </head>
       <body className="flex min-h-svh flex-col">
         <a
           href="#main"

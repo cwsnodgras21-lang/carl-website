@@ -108,10 +108,12 @@ export function SceneShell({
       className={cn("relative", className)}
     >
       <Container className="md:grid md:grid-cols-[var(--rail)_minmax(0,1fr)]">
-        {/* Desktop rail column: sticky node, index and layer name. */}
+        {/* Desktop rail column: sticky node, index and layer name. The sticky
+            block has real height so it unsticks before the next scene's
+            label arrives (they never stack). */}
         <div aria-hidden="true" className="relative hidden md:block">
           {drawRail && (
-            <div className="sticky top-24 h-0">
+            <div className="sticky top-24 h-36">
               <span className="absolute left-3 top-0 z-[1] size-[9px] -translate-x-1/2 border border-foreground bg-background" />
               <div className="flex w-fit flex-col items-start gap-3 pl-6">
                 <span className="font-mono text-label-sm leading-none text-muted">{index}</span>

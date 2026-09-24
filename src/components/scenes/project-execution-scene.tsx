@@ -37,10 +37,12 @@ export function ProjectExecutionScene() {
           </div>
 
           <div className="lg:col-span-4">
-            <Display as="p" className="max-w-[12ch] text-accent">
-              {copy.turn}
-            </Display>
-            <Body className="mt-6 text-lg md:text-lg">{copy.body}</Body>
+            <div data-turn>
+              <Display as="p" className="max-w-[12ch] text-accent">
+                {copy.turn}
+              </Display>
+              <Body className="mt-6 text-lg md:text-lg">{copy.body}</Body>
+            </div>
 
             <div className="mt-10 border-t border-border pt-6" data-metric={saved.id}>
               <p className="font-display text-display-md font-semibold [font-stretch:112%]">

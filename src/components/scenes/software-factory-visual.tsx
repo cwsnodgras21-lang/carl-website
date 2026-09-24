@@ -63,7 +63,7 @@ export function GovernedPipeline({
             className="relative grid"
             style={{ gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))` }}
           >
-            <span aria-hidden="true" className="absolute left-0 right-[-2.5rem] top-1/2 h-px bg-technical" />
+            <span aria-hidden="true" data-channel className="absolute left-0 right-[-2.5rem] top-1/2 h-px bg-technical" />
             <span data-exit aria-hidden="true" className="absolute right-[-2.5rem] top-1/2 size-0 -translate-y-1/2 border-y-[6px] border-l-[10px] border-y-transparent border-l-accent" />
             {stages.map((stage) => (
               <li key={stage.id} className="relative flex justify-center" data-stage={stage.id}>
