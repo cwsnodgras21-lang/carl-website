@@ -31,26 +31,12 @@ function arrowFor(href: string): Arrow {
 
 /**
  * The site's one link/button style. Handles internal routes, in-page
- * anchors, external URLs and links that haven't been supplied yet.
+ * anchors and external URLs; renders nothing for a link that hasn't been
+ * supplied yet.
  */
 export function ActionLink({ href, children, arrow, variant = "quiet", className }: Props) {
-  if (isPending(href)) {
-    // Honest but quiet: reads as not-yet-connected, never as a broken button.
-    return (
-      <span
-        className={cn(
-          "inline-flex items-baseline gap-3 font-sans text-base text-muted md:text-lg",
-          className,
-        )}
-        title={`Link pending: ${href.pending}`}
-      >
-        {children}
-        <span className="font-mono text-label-sm lowercase tracking-normal text-technical">
-          pending
-        </span>
-      </span>
-    );
-  }
+  // A link without a real destination isn't shown at all.
+  if (isPending(href)) return null;
 
   const glyphKind = arrow ?? arrowFor(href);
   const classes = cn(

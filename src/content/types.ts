@@ -3,8 +3,9 @@
  * typed here; components only render it.
  *
  * Rule: never fill a gap with something plausible. If a fact hasn't been
- * supplied, use `pending("what's missing")`. Pending values render as a
- * visible annotation and are listed by `npm run content:pending`.
+ * supplied, use `pending("what's missing")`. Pending values are never shown
+ * to visitors: whatever depends on them is left out until the fact exists.
+ * `npm run content:pending` lists what's still missing.
  */
 
 export type Pending = { readonly pending: string };

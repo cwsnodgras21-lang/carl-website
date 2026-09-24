@@ -1,4 +1,4 @@
-import { pending, type Article } from "./types";
+import { isPending, pending, type Article } from "./types";
 
 /**
  * Writing. Only publish pieces that actually exist — no placeholder articles
@@ -16,7 +16,12 @@ export const articles: Article[] = [
   },
 ];
 
+/** Articles with something to read. The rest stay here, unpublished. */
+export const publishedArticles = articles.filter(
+  (article) => !isPending(article.body) || !!article.externalUrl,
+);
+
 export const getArticle = (slug: string) =>
-  articles.find((article) => article.slug === slug);
+  publishedArticles.find((article) => article.slug === slug);
 
 export const articleHref = (slug: string) => `/thinking/${slug}`;

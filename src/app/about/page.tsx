@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { about } from "@/content/about";
 import { layers, milestones } from "@/content/career";
-import { isPending } from "@/content/types";
+import { hasContact } from "@/content/site";
 import { ActionLink } from "@/components/ui/action-link";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
-import { PendingNote } from "@/components/ui/pending-note";
 import { Label } from "@/components/ui/typography";
 
 export const metadata: Metadata = {
@@ -30,7 +29,6 @@ export default function AboutPage() {
             >
               {layers.join(" → ")}
             </p>
-            {isPending(about.expanded) && <PendingNote>{about.expanded.pending}</PendingNote>}
           </div>
 
           <section aria-labelledby="timeline-title">
@@ -57,7 +55,7 @@ export default function AboutPage() {
           <ActionLink href="/work" variant="primary">
             See the work
           </ActionLink>
-          <ActionLink href="/#contact">Let&apos;s talk</ActionLink>
+          {hasContact && <ActionLink href="/#contact">Let&apos;s talk</ActionLink>}
         </div>
       </Container>
     </>

@@ -1,5 +1,5 @@
 import { closing } from "@/content/home";
-import { links, site } from "@/content/site";
+import { contactLinks, site } from "@/content/site";
 import { Connection } from "@/components/system/connection";
 import { SceneShell } from "@/components/system/scene-shell";
 import { ActionLink } from "@/components/ui/action-link";
@@ -26,15 +26,17 @@ export function ClosingScene() {
           <Display as="p" size="md" className="mt-10 text-accent">
             {closing.question}
           </Display>
-          <ul className="mt-14 flex flex-col items-start gap-5">
-            {[links.nolturn, links.linkedin, links.contact].map((link, i) => (
-              <li key={link.label}>
-                <ActionLink href={link.href} variant={i === 0 ? "primary" : "quiet"}>
-                  {link.label}
-                </ActionLink>
-              </li>
-            ))}
-          </ul>
+          {contactLinks.length > 0 && (
+            <ul className="mt-14 flex flex-col items-start gap-5">
+              {contactLinks.map((link, i) => (
+                <li key={link.label}>
+                  <ActionLink href={link.href} variant={i === 0 ? "primary" : "quiet"}>
+                    {link.label}
+                  </ActionLink>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </SceneShell>

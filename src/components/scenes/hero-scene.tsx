@@ -30,7 +30,9 @@ export function HeroScene() {
             <ActionLink href={hero.primaryCta.href} variant="primary">
               {hero.primaryCta.label}
             </ActionLink>
-            <ActionLink href={hero.secondaryCta.href}>{hero.secondaryCta.label}</ActionLink>
+            {hero.secondaryCta && (
+              <ActionLink href={hero.secondaryCta.href}>{hero.secondaryCta.label}</ActionLink>
+            )}
           </div>
         </div>
       </div>

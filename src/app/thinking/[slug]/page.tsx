@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { articles, getArticle } from "@/content/articles";
+import { getArticle, publishedArticles } from "@/content/articles";
 import { isPending } from "@/content/types";
 import { ActionLink } from "@/components/ui/action-link";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
-import { PendingNote } from "@/components/ui/pending-note";
 import { Body } from "@/components/ui/typography";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+  return publishedArticles.map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata(props: PageProps<"/thinking/[slug]">): Promise<Metadata> {
@@ -37,9 +36,7 @@ export default async function ArticlePage(props: PageProps<"/thinking/[slug]">) 
       </PageHeader>
       <Container className="pb-32">
         <div className="max-w-2xl border-t border-border pt-14 text-lg leading-relaxed text-foreground/90 md:text-xl">
-          {isPending(article.body) ? (
-            <PendingNote>{article.body.pending}</PendingNote>
-          ) : (
+          {!isPending(article.body) && (
             <div className="flex flex-col gap-6">
               {article.body.map((paragraph) => (
                 <p key={paragraph.slice(0, 40)}>{paragraph}</p>
