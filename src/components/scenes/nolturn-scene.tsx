@@ -1,9 +1,10 @@
 import { nolturn as copy } from "@/content/home";
 import { getProject, projectHref } from "@/content/projects";
 import { SceneShell } from "@/components/system/scene-shell";
-import { ScreenshotSlot } from "@/components/system/screenshot-slot";
+import { ScreenshotSlot, suppliedImages } from "@/components/system/screenshot-slot";
 import { ActionLink } from "@/components/ui/action-link";
 import { Body, Display, Label } from "@/components/ui/typography";
+import { cn } from "@/lib/cn";
 import { GovernedPipeline } from "./software-factory-visual";
 
 /**
@@ -13,6 +14,7 @@ import { GovernedPipeline } from "./software-factory-visual";
 export function NolTurnScene() {
   const inventory = getProject(copy.inventory.slug);
   const factory = getProject(copy.factory.slug);
+  const screenshot = inventory ? suppliedImages(inventory.images)[0] : undefined;
 
   return (
     <>
@@ -35,9 +37,12 @@ export function NolTurnScene() {
           {inventory && (
             <article
               aria-labelledby="nolturn-inventory"
-              className="mt-20 grid gap-10 border-t border-border pt-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16"
+              className={cn(
+                "mt-20 grid gap-10 border-t border-border pt-10 lg:gap-16",
+                screenshot && "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]",
+              )}
             >
-              <div>
+              <div className={cn(!screenshot && "max-w-3xl")}>
                 <Label>Product · {inventory.title}</Label>
                 <h3
                   id="nolturn-inventory"
@@ -60,7 +65,7 @@ export function NolTurnScene() {
                   See how it works
                 </ActionLink>
               </div>
-              {inventory.images[0] && <ScreenshotSlot image={inventory.images[0]} />}
+              {screenshot && <ScreenshotSlot image={screenshot} />}
             </article>
           )}
         </div>

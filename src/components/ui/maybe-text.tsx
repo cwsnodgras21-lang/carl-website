@@ -1,7 +1,6 @@
 import { isPending, type Maybe } from "@/content/types";
-import { PendingNote } from "./pending-note";
 
-/** Renders supplied copy, or a visible pending annotation. */
+/** Renders supplied copy; nothing at all while it's pending. */
 export function MaybeText({
   value,
   className,
@@ -9,6 +8,6 @@ export function MaybeText({
   value: Maybe<string>;
   className?: string;
 }) {
-  if (isPending(value)) return <PendingNote>{value.pending}</PendingNote>;
+  if (isPending(value)) return null;
   return <p className={className}>{value}</p>;
 }

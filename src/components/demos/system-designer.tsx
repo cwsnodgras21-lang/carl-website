@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { defaultSelection, designSystem, requirements, today, type RequirementId } from "@/demos/system";
+import { defaultSelection, designSystem, requirements, selectionFeedback, today, type RequirementId } from "@/demos/system";
 import type { DemoMotion } from "@/motion/demos";
 import { SvgNode } from "@/components/system/svg-primitives";
 import { SystemDiagram } from "@/components/system/system-diagram";
@@ -48,6 +48,7 @@ export function SystemDesigner() {
   const figure = useRef<HTMLDivElement>(null);
 
   const design = designSystem(selected);
+  const feedback = selectionFeedback(selected);
   const nodeIds = (ids: RequirementId[]) => designSystem(ids).diagram.columns.flat().map((n) => n.id);
   const edgeIds = (ids: RequirementId[]) => designSystem(ids).diagram.edges.map(([a, b]) => `${a}-${b}`);
 
@@ -94,7 +95,7 @@ export function SystemDesigner() {
 
   const pieces = design.diagram.columns.length;
   const statusText = built
-    ? `System · ${pieces} pieces · ${design.rules.length} rules`
+    ? `System · ${pieces} pieces · ${design.rules.length} ${design.rules.length === 1 ? "rule" : "rules"}`
     : `Ready · ${selected.length} of ${requirements.length} requirements`;
 
   return (
@@ -139,6 +140,16 @@ export function SystemDesigner() {
               );
             })}
           </ul>
+          {/* The system's opinion at the two extremes. Space is reserved so
+              the layout doesn't move when it appears. */}
+          <p role="status" aria-live="polite" className="mt-3 flex min-h-10 gap-3 font-mono text-[0.8rem] leading-5 text-foreground/85">
+            {feedback && (
+              <>
+                <span aria-hidden="true" className="mt-[0.45rem] size-[5px] shrink-0 bg-accent" />
+                {feedback}
+              </>
+            )}
+          </p>
         </fieldset>
       </div>
 

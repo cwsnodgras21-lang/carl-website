@@ -11,10 +11,24 @@ export function OutputEmpty({ children }: { children: ReactNode }) {
   );
 }
 
-export function Stat({ value, label, accent }: { value: ReactNode; label: string; accent?: boolean }) {
+export function Stat({
+  value,
+  label,
+  note,
+  accent,
+}: {
+  value: ReactNode;
+  label: string;
+  /** Secondary remark under the label. */
+  note?: string;
+  accent?: boolean;
+}) {
   return (
-    <div className="flex flex-col-reverse gap-1">
-      <dt className="text-sm leading-snug text-muted">{label}</dt>
+    <div className="flex flex-col-reverse justify-end gap-1">
+      <dt className="text-sm leading-snug text-muted">
+        {label}
+        {note && <span className="mt-1 block font-mono text-[0.7rem] leading-snug text-balance text-technical">{note}</span>}
+      </dt>
       <dd
         className={cn(
           "font-display text-[1.6rem] font-semibold leading-none tabular-nums [font-stretch:112%]",

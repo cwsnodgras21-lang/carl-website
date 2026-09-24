@@ -54,7 +54,7 @@ export const demos: Demo[] = [
     name: "System Designer",
     summary: "A messy process → the smallest system that fixes it.",
     problem:
-      "We track field issues across email, Excel, and Teams. Nobody knows who owns what or whether something was resolved.",
+      "Field issues come in through email, Excel, and Teams. Nobody knows who owns what, and the only way to find out if something got fixed is to ask somebody.",
     system: "Pick what the process actually needs. Each requirement adds one piece and one rule.",
     result: "A simple architecture that covers it, and nothing it doesn't need.",
   },

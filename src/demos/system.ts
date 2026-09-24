@@ -35,6 +35,18 @@ export const defaultSelection = requirements.filter((r) => r.defaultOn).map((r) 
 
 const CORE = { id: "issue", label: "Issue", core: true };
 
+/**
+ * The system's opinion of the selection, at the two extremes only.
+ * Everything optional on: worth questioning. Nothing optional on (the
+ * smallest system the model can build, Inbox → Issue): often fine.
+ */
+export function selectionFeedback(selected: RequirementId[]): string | null {
+  const chosen = requirements.filter((r) => selected.includes(r.id)).length;
+  if (chosen === requirements.length) return "That's everything. Worth checking whether you actually need all of it.";
+  if (chosen === 0) return "Honestly, sometimes that's enough.";
+  return null;
+}
+
 /** The system for a set of requirements, as a left-to-right chain. */
 export function designSystem(selected: RequirementId[]): {
   diagram: SystemDiagram;

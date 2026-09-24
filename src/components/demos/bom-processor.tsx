@@ -198,7 +198,7 @@ export function BomProcessor() {
                 <Stat value={bom.stats.partsFromStock} label="Parts fully covered by inventory" />
                 <Stat value={bom.stats.partsToBuy} label="Parts that need purchasing" accent />
                 <Stat value={bom.stats.unitsFromStock} label="Units already in stock, not reordered" />
-                <Stat value={formatMs(result.ms)} label="Compute time, this browser" />
+                <Stat value={formatMs(result.ms)} label="Compute time, this browser" note="Slowed down so you can watch it." />
               </dl>
               <table className="mt-8 w-full text-sm">
                 <caption className="sr-only">Purchase list</caption>

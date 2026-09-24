@@ -3,18 +3,19 @@
  * wording can change without touching layout or animation code.
  */
 
-import { links } from "./site";
+import { hasContact, links } from "./site";
 import { isPending } from "./types";
 
 export const hero = {
   eyebrow: "Carl Snodgrass",
   primaryCta: { label: "Explore my work", href: "#journey" },
   // Goes straight to NolTurn once its URL exists; until then, to the
-  // closing scene on this page (and the arrow says so).
-  secondaryCta: {
-    label: "Work with me",
-    href: isPending(links.nolturn.href) ? "#contact" : links.nolturn.href,
-  },
+  // closing scene's contact links, and not at all while there are none.
+  secondaryCta: !isPending(links.nolturn.href)
+    ? { label: "Work with me", href: links.nolturn.href }
+    : hasContact
+      ? { label: "Work with me", href: "#contact" }
+      : null,
 };
 
 export const journey = {
@@ -136,10 +137,18 @@ export const nolturn = {
 export const process = {
   heading: "From idea to system.",
   stages: [
-    { index: "01", title: "Understand", body: "What problem are we actually solving?" },
+    {
+      index: "01",
+      title: "Understand",
+      body: "Figure out how the work actually happens. It's usually a few spreadsheets, three different processes, and one person who knows how they all fit together.",
+    },
     { index: "02", title: "Visualize", body: "How should the work move?" },
     { index: "03", title: "Build", body: "Make the smallest useful version real." },
-    { index: "04", title: "Refine", body: "Put it in front of people and learn." },
+    {
+      index: "04",
+      title: "Refine",
+      body: "Put it in front of the people who actually have to use it. They'll find what you missed.",
+    },
   ],
   principle: "Complexity has to earn its existence.",
 };

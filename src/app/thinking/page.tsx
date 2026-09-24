@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { articleHref, articles } from "@/content/articles";
+import { notFound } from "next/navigation";
+import { articleHref, publishedArticles } from "@/content/articles";
 import { thinking } from "@/content/home";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
@@ -11,12 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default function ThinkingPage() {
+  // Nothing published yet: the page doesn't exist rather than sitting empty.
+  if (publishedArticles.length === 0) notFound();
+
   return (
     <>
       <PageHeader label={thinking.label} title={thinking.heading} />
       <Container className="pb-32">
         <ul>
-          {articles.map((article) => (
+          {publishedArticles.map((article) => (
             <li key={article.slug} className="border-t border-border">
               <Link
                 href={articleHref(article.slug)}
