@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { getMetric } from "@/content/metrics";
-import { getProject, projects } from "@/content/projects";
+import { getProject, projectHref, projects } from "@/content/projects";
 import { isPending } from "@/content/types";
 import { MetricInline } from "@/components/system/metric";
 import { ScreenshotSlot, suppliedImages } from "@/components/system/screenshot-slot";
@@ -23,7 +24,9 @@ export function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/work/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const project = getProject(slug);
-  return project ? { title: project.title, description: project.summary } : {};
+  return project
+    ? pageMetadata({ title: project.title, description: project.summary, path: projectHref(project.slug) })
+    : {};
 }
 
 /** Case-study section: numbered, labelled, business story first. */

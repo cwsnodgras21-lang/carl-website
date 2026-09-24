@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import type { ReactNode } from "react";
 import { demos, demosIntro, type DemoId } from "@/content/demos";
 import { BomProcessor } from "@/components/demos/bom-processor";
@@ -9,10 +10,11 @@ import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
 import { Body } from "@/components/ui/typography";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Demos",
   description: "Small, synthetic, interactive versions of the kinds of problems Carl Snodgrass solves.",
-};
+  path: "/demos",
+});
 
 const instruments: Record<DemoId, ReactNode> = {
   bom: <BomProcessor />,

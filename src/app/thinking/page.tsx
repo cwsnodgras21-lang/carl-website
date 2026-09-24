@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { articleHref, publishedArticles } from "@/content/articles";
@@ -6,10 +7,11 @@ import { thinking } from "@/content/home";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Thinking",
   description: "Writing by Carl Snodgrass on systems, organizations, and building software.",
-};
+  path: "/thinking",
+});
 
 export default function ThinkingPage() {
   // Nothing published yet: the page doesn't exist rather than sitting empty.
