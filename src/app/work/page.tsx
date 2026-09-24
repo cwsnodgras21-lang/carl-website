@@ -46,12 +46,12 @@ function ProjectRow({ project }: { project: Project }) {
             {project.summary}
           </span>
           {project.metrics.length > 0 && (
-            <span className="mt-5 flex flex-wrap gap-x-8 gap-y-2 font-mono text-label uppercase text-muted">
+            <span className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted">
               {project.metrics.map((id) => {
                 const metric = getMetric(id);
                 return metric ? (
                   <span key={id}>
-                    <MetricFigure metric={metric} className="text-foreground" /> {metric.label}
+                    <MetricFigure metric={metric} className="font-semibold text-foreground" /> {metric.label}
                   </span>
                 ) : null;
               })}

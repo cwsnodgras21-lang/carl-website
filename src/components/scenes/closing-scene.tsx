@@ -12,6 +12,7 @@ export function ClosingScene() {
       id="contact"
       index="11"
       layer="connection"
+      railLabel="Connection"
       labelledBy="closing-title"
       rail="none"
       className="overflow-hidden"
@@ -24,7 +25,7 @@ export function ClosingScene() {
         <Display as="p" size="md" className="mt-10 text-accent">
           {closing.question}
         </Display>
-        <ul className="mt-14 flex flex-col items-start gap-6">
+        <ul className="mt-14 flex flex-col items-start gap-5">
           {[links.nolturn, links.linkedin, links.contact].map((link, i) => (
             <li key={link.label}>
               <ActionLink href={link.href} variant={i === 0 ? "primary" : "quiet"}>

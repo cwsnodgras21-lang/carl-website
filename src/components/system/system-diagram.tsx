@@ -1,63 +1,213 @@
-import type { DiagramNode, SystemDiagram as Diagram } from "@/content/types";
+import type { SystemDiagram as Diagram } from "@/content/types";
 import { cn } from "@/lib/cn";
+import {
+  labelWidth,
+  layoutSwitch,
+  NODE_H,
+  SvgNode,
+  Terminal,
+  Wire,
+} from "./svg-primitives";
 
 /**
- * Renders a conceptual system diagram from content.
+ * Generic conceptual system diagram, driven entirely by content.
  *
- * Desktop: an SVG schematic with orthogonal connectors.
- * Mobile:  the same columns re-flowed as top→bottom rows in HTML — a
- *          different geometry, not a shrunken SVG.
- * Screen readers get one plain-language description; both visual variants
- * are hidden from assistive tech.
+ * Wide geometry: columns left→right with orthogonal connectors.
+ * Narrow geometry: layers top→bottom; a layer too wide for one row becomes a
+ *   stack on a spine. Every edge from the data is drawn in both geometries,
+ *   so they always say the same thing.
+ * Screen readers get one plain-language description.
+ *
+ * Homepage flagship scenes use bespoke compositions; this is used by case
+ * studies and anywhere a diagram doesn't need its own composition.
  */
 
-const NODE_H = 44;
+type Box = { id: string; label: string; core?: boolean; x: number; y: number; w: number };
+
+/* ─── Wide (left → right) ───────────────────────────────────────────────── */
+
+const COL_GAP = 64;
 const ROW_GAP = 18;
-const PAD = 12;
+const PAD = 8;
 
-type Placed = DiagramNode & { x: number; y: number; w: number };
-
-function layout(diagram: Diagram) {
-  const dense = diagram.columns.length > 5;
-  const nodeW = dense ? 118 : 176;
-  const colGap = dense ? 34 : 84;
+function wideLayout(diagram: Diagram) {
+  const widths = diagram.columns.map((column) =>
+    Math.max(...column.map((node) => labelWidth(node.label, 110))),
+  );
   const tallest = Math.max(...diagram.columns.map((c) => c.length));
   const height = tallest * NODE_H + (tallest - 1) * ROW_GAP + PAD * 2;
-  const width = diagram.columns.length * nodeW + (diagram.columns.length - 1) * colGap + PAD * 2;
+  const width = widths.reduce((sum, w) => sum + w, 0) + COL_GAP * (widths.length - 1) + PAD * 2;
 
-  const nodes = new Map<string, Placed>();
+  const boxes = new Map<string, Box & { col: number }>();
+  let x = PAD;
   diagram.columns.forEach((column, c) => {
     const colHeight = column.length * NODE_H + (column.length - 1) * ROW_GAP;
     const top = (height - colHeight) / 2;
     column.forEach((node, r) => {
-      nodes.set(node.id, {
-        ...node,
-        x: PAD + c * (nodeW + colGap),
-        y: top + r * (NODE_H + ROW_GAP),
-        w: nodeW,
-      });
+      boxes.set(node.id, { ...node, x, y: top + r * (NODE_H + ROW_GAP), w: widths[c], col: c });
     });
+    x += widths[c] + COL_GAP;
+  });
+  return { boxes, width, height };
+}
+
+function WideDiagram({ diagram }: { diagram: Diagram }) {
+  const { boxes, width, height } = wideLayout(diagram);
+  return (
+    <svg
+      aria-hidden="true"
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      className="h-auto max-w-full"
+      data-geometry="wide"
+    >
+      {diagram.edges.map(([from, to]) => {
+        const a = boxes.get(from);
+        const b = boxes.get(to);
+        if (!a || !b) return null;
+        const x1 = a.x + a.w;
+        const y1 = a.y + NODE_H / 2;
+        const x2 = b.x;
+        const y2 = b.y + NODE_H / 2;
+        const mid = x1 + COL_GAP / 2;
+        const d = y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} H${mid} V${y2} H${x2}`;
+        return (
+          <g key={`${from}-${to}`} data-edge={`${from}-${to}`}>
+            <Wire id={`${from}-${to}`} d={d} />
+            <Terminal x={x2} y={y2} />
+            {diagram.flow && (
+              <rect
+                data-part
+                x={x1 + (x2 - x1) / 2 - 4}
+                y={y1 - 4}
+                width={8}
+                height={8}
+                className="fill-accent"
+              />
+            )}
+          </g>
+        );
+      })}
+      {[...boxes.values()].map((box) => (
+        <SvgNode
+          key={box.id}
+          id={box.id}
+          x={box.x}
+          y={box.y}
+          w={box.w}
+          label={box.label}
+          variant={box.core ? "core" : "default"}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/* ─── Narrow (top → bottom) ─────────────────────────────────────────────── */
+
+const N_W = 340;
+const N_GAP = 10;
+const N_LAYER_GAP = 40;
+const N_SPINE_X = 16;
+const N_STACK_X = 36;
+const N_CHANNEL_X = N_W - 10;
+
+type Layer = { kind: "row" | "stack"; top: number; bottom: number; boxes: Box[] };
+
+function narrowLayout(diagram: Diagram) {
+  const layers: Layer[] = [];
+  let y = 6;
+  for (const column of diagram.columns) {
+    const widths = column.map((n) => labelWidth(n.label, 84));
+    const rowWidth = widths.reduce((s, w) => s + w, 0) + N_GAP * (column.length - 1);
+    if (column.length <= 3 && rowWidth <= N_W - 12) {
+      let x = (N_W - rowWidth) / 2;
+      const boxes = column.map((n, i) => {
+        const box = { ...n, x, y, w: widths[i] };
+        x += widths[i] + N_GAP;
+        return box;
+      });
+      layers.push({ kind: "row", top: y, bottom: y + NODE_H, boxes });
+      y += NODE_H + N_LAYER_GAP;
+    } else {
+      const w = N_CHANNEL_X - 14 - N_STACK_X;
+      const boxes = column.map((n, i) => ({ ...n, x: N_STACK_X, y: y + i * (NODE_H + N_GAP), w }));
+      const bottom = y + column.length * (NODE_H + N_GAP) - N_GAP;
+      layers.push({ kind: "stack", top: y, bottom, boxes });
+      y = bottom + N_LAYER_GAP;
+    }
+  }
+  const find = (id: string) => {
+    for (let i = 0; i < layers.length; i++) {
+      const box = layers[i].boxes.find((b) => b.id === id);
+      if (box) return { box, layer: layers[i], index: i };
+    }
+  };
+  return { layers, find, height: y - N_LAYER_GAP + 6 };
+}
+
+function NarrowDiagram({ diagram }: { diagram: Diagram }) {
+  const { layers, find, height } = narrowLayout(diagram);
+  const wires = diagram.edges.flatMap(([from, to]) => {
+    const a = find(from);
+    const b = find(to);
+    if (!a || !b) return [];
+    const channel = a.layer.bottom + N_LAYER_GAP / 2;
+    const bx = b.box.x + b.box.w / 2;
+    let d: string;
+    let end: [number, number];
+    if (a.layer.kind === "row" && b.layer.kind === "stack") {
+      // Down from the source, onto the spine, branch into the target.
+      const ax = a.box.x + a.box.w / 2;
+      const ty = b.box.y + NODE_H / 2;
+      d = `M${ax} ${a.box.y + NODE_H} V${channel} H${N_SPINE_X} V${ty} H${b.box.x}`;
+      end = [b.box.x, ty];
+    } else if (a.layer.kind === "stack") {
+      // Out of the source's right side, down the channel, into the target.
+      const ay = a.box.y + NODE_H / 2;
+      const approach = b.layer.top - N_LAYER_GAP / 2;
+      d = `M${a.box.x + a.box.w} ${ay} H${N_CHANNEL_X} V${approach} H${bx} V${b.box.y}`;
+      end = [bx, b.box.y];
+    } else {
+      const ax = a.box.x + a.box.w / 2;
+      d = `M${ax} ${a.box.y + NODE_H} V${channel} H${bx} V${b.box.y}`;
+      end = [bx, b.box.y];
+    }
+    return [{ id: `${from}-${to}`, d, end }];
   });
 
-  return { nodes, width, height, colGap };
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 ${N_W} ${height}`}
+      className="h-auto w-full max-w-[30rem]"
+      data-geometry="narrow"
+    >
+      {wires.map((wire) => (
+        <g key={wire.id} data-edge={wire.id}>
+          <Wire id={wire.id} d={wire.d} />
+          <Terminal x={wire.end[0]} y={wire.end[1]} />
+        </g>
+      ))}
+      {layers.flatMap((layer) =>
+        layer.boxes.map((box) => (
+          <SvgNode
+            key={box.id}
+            id={box.id}
+            x={box.x}
+            y={box.y}
+            w={box.w}
+            label={box.label}
+            variant={box.core ? "core" : "default"}
+          />
+        )),
+      )}
+    </svg>
+  );
 }
 
-/** Orthogonal "schematic" connector from the right of a to the left of b. */
-function connector(a: Placed, b: Placed, colGap: number) {
-  const x1 = a.x + a.w;
-  const y1 = a.y + NODE_H / 2;
-  const x2 = b.x;
-  const y2 = b.y + NODE_H / 2;
-  const mid = x1 + colGap / 2;
-  return {
-    d: y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} H${mid} V${y2} H${x2}`,
-    x1,
-    y1,
-    x2,
-    y2,
-    mid,
-  };
-}
+/* ─── Public component ──────────────────────────────────────────────────── */
 
 export function describeDiagram(diagram: Diagram) {
   const label = (id: string) =>
@@ -78,100 +228,17 @@ export function SystemDiagram({
   diagram: Diagram;
   className?: string;
 }) {
-  const { nodes, width, height, colGap } = layout(diagram);
+  const { width } = wideLayout(diagram);
+  const swap = layoutSwitch(width);
 
   return (
-    <figure className={cn("w-full", className)}>
-      {/* Desktop schematic */}
-      <svg
-        aria-hidden="true"
-        viewBox={`0 0 ${width} ${height}`}
-        preserveAspectRatio="xMinYMid meet"
-        className="hidden h-auto w-full md:block"
-        style={{ maxHeight: `${height * 1.4}px` }}
-        data-diagram
-      >
-        <g fill="none" strokeWidth={1.25} className="stroke-technical">
-          {diagram.edges.map(([from, to]) => {
-            const a = nodes.get(from);
-            const b = nodes.get(to);
-            if (!a || !b) return null;
-            const c = connector(a, b, colGap);
-            return (
-              <g key={`${from}-${to}`} data-edge={`${from}-${to}`}>
-                <path d={c.d} />
-                <circle cx={c.x2} cy={c.y2} r={2.5} className="fill-technical" stroke="none" />
-                {diagram.flow && (
-                  <rect
-                    x={c.x1 + (c.x2 - c.x1) / 2 - 4}
-                    y={c.y1 - 4}
-                    width={8}
-                    height={8}
-                    className="fill-accent"
-                    stroke="none"
-                    data-part
-                  />
-                )}
-              </g>
-            );
-          })}
-        </g>
-        {[...nodes.values()].map((node) => (
-          <g key={node.id} data-node={node.id}>
-            <rect
-              x={node.x}
-              y={node.y}
-              width={node.w}
-              height={NODE_H}
-              className={cn(
-                "fill-surface",
-                node.core ? "stroke-accent" : "stroke-technical",
-              )}
-              strokeWidth={node.core ? 1.75 : 1}
-            />
-            <text
-              x={node.x + node.w / 2}
-              y={node.y + NODE_H / 2}
-              dominantBaseline="central"
-              textAnchor="middle"
-              className={cn(
-                "font-mono uppercase",
-                node.core ? "fill-foreground" : "fill-muted",
-              )}
-              style={{ fontSize: 12, letterSpacing: "0.08em" }}
-            >
-              {node.label}
-            </text>
-          </g>
-        ))}
-      </svg>
-
-      {/* Mobile flow: columns become rows */}
-      <ol aria-hidden="true" className="flex flex-col items-center md:hidden">
-        {diagram.columns.map((column, i) => (
-          <li key={i} className="flex flex-col items-center">
-            {i > 0 && (
-              <span className="flex h-7 w-px flex-col items-center bg-technical">
-                <span className="mt-auto size-1.5 translate-y-1 rounded-full bg-technical" />
-              </span>
-            )}
-            <span className="flex flex-wrap justify-center gap-2">
-              {column.map((node) => (
-                <span
-                  key={node.id}
-                  className={cn(
-                    "border bg-surface px-3 py-2 font-mono text-label uppercase",
-                    node.core ? "border-accent text-foreground" : "border-technical/60 text-muted",
-                  )}
-                >
-                  {node.label}
-                </span>
-              ))}
-            </span>
-          </li>
-        ))}
-      </ol>
-
+    <figure className={cn("@container w-full", className)}>
+      <div className={swap.wide}>
+        <WideDiagram diagram={diagram} />
+      </div>
+      <div className={swap.narrow}>
+        <NarrowDiagram diagram={diagram} />
+      </div>
       <figcaption className="sr-only">
         {diagram.title}. {describeDiagram(diagram)}
       </figcaption>

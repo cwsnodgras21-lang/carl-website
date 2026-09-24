@@ -14,7 +14,7 @@ export function ThinkingScene() {
       id="thinking"
       index="10"
       layer="connection"
-      railLabel="Writing"
+      railLabel="Notes"
       labelledBy="thinking-title"
     >
       <div className="pb-24 pt-8 md:pb-40">

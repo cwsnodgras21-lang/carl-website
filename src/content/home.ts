@@ -3,10 +3,18 @@
  * wording can change without touching layout or animation code.
  */
 
+import { links } from "./site";
+import { isPending } from "./types";
+
 export const hero = {
   eyebrow: "Carl Snodgrass",
   primaryCta: { label: "Explore my work", href: "#journey" },
-  secondaryCta: { label: "Work with me", href: "#contact" },
+  // Goes straight to NolTurn once its URL exists; until then, to the
+  // closing scene on this page (and the arrow says so).
+  secondaryCta: {
+    label: "Work with me",
+    href: isPending(links.nolturn.href) ? "#contact" : links.nolturn.href,
+  },
 };
 
 export const journey = {
@@ -41,16 +49,27 @@ export const customerOperations = {
   slug: "customer-operations",
 };
 
+/**
+ * A quick win is a transformation: old process → intervention → new process.
+ * Values come from metrics where one exists; the words around them are the
+ * supplied descriptions, not new claims.
+ */
+export type QuickWinStage = {
+  /** Headline value for this side of the transformation. */
+  value?: string;
+  /** What it was / what it became, in plain words. */
+  text?: string;
+};
+
 export type QuickWin = {
   id: string;
   label: string;
-  /** Metric id for the headline figure, if there is one. */
+  /** Metric the values come from (before/after or value). */
   metric?: string;
-  /** Headline when there's no metric. */
-  headline?: string;
-  body: string[];
-  list?: string[];
-  footnote?: string;
+  before: QuickWinStage;
+  /** The intervention — what was built. */
+  via: string;
+  after: QuickWinStage;
 };
 
 export const quickWins = {
@@ -58,46 +77,42 @@ export const quickWins = {
   items: [
     {
       id: "bom",
-      label: "BOM Processing",
+      label: "BOM processing",
       metric: "bomProcessing",
-      body: [
-        "Tens of thousands of raw engineering lines aggregated into actionable material demand automatically.",
-        "The system also checks available warehouse inventory against project demand before additional material is purchased.",
-      ],
+      before: { text: "Tens of thousands of raw engineering lines" },
+      via: "Aggregation + warehouse inventory check",
+      after: { text: "Actionable material demand" },
     },
     {
       id: "po",
-      label: "Purchase Orders",
+      label: "Purchase orders",
       metric: "purchaseOrders",
-      body: ["A safe Sage import generated directly from Quickbase."],
+      before: { text: "Purchase-order preparation" },
+      via: "Safe Sage import generated directly from Quickbase",
+      after: {},
     },
     {
       id: "reuse",
-      label: "Material Reuse",
+      label: "Material reuse",
       metric: "materialReuse",
-      body: [
-        "Project demand checks available warehouse inventory before new material is purchased.",
-      ],
+      before: { text: "New project demand" },
+      via: "Check available warehouse inventory before buying",
+      after: {},
     },
     {
       id: "salesforce",
       label: "Salesforce",
-      headline: "Connected and live.",
-      body: [],
-      list: [
-        "ZoomInfo integration",
-        "Sales Engagement integration",
-        "Campaign infrastructure",
-        "Supporting Salesforce configuration",
-      ],
+      before: { text: "Salesforce" },
+      via: "ZoomInfo + Sales Engagement integrations, campaign infrastructure, supporting configuration",
+      after: { value: "Connected and live." },
     },
     {
       id: "custom",
-      label: "Custom Development",
+      label: "Custom development",
       metric: "customCodePages",
-      body: [],
-      footnote:
-        "A vendor previously quoted approximately $6,000 for an individual code page.",
+      before: { value: "~$6,000", text: "Vendor quote for a single code page" },
+      via: "Built internally",
+      after: { text: "Custom code pages" },
     },
   ] satisfies QuickWin[],
 };

@@ -47,7 +47,7 @@ export default async function ArticlePage(props: PageProps<"/thinking/[slug]">) 
             </div>
           )}
           {article.externalUrl && (
-            <ActionLink href={article.externalUrl} arrow="out" className="mt-10">
+            <ActionLink href={article.externalUrl} className="mt-10">
               Read the full piece
             </ActionLink>
           )}

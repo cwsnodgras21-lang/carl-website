@@ -9,27 +9,50 @@ const arrows = {
   right: "→",
 } as const;
 
+type Arrow = keyof typeof arrows;
+
 type Props = {
   href: Maybe<string>;
   children: ReactNode;
-  arrow?: keyof typeof arrows;
+  /** Defaults from the destination: ↗ leaves the site, ↓ stays on this page, → goes to another page. */
+  arrow?: Arrow;
   variant?: "primary" | "quiet";
   className?: string;
 };
 
 const isExternal = (href: string) => /^(https?:|mailto:|tel:)/.test(href);
 
+/** The glyph must describe what the link actually does. */
+function arrowFor(href: string): Arrow {
+  if (isExternal(href)) return "out";
+  if (href.startsWith("#")) return "down";
+  return "right";
+}
+
 /**
  * The site's one link/button style. Handles internal routes, in-page
  * anchors, external URLs and links that haven't been supplied yet.
  */
-export function ActionLink({
-  href,
-  children,
-  arrow = "right",
-  variant = "quiet",
-  className,
-}: Props) {
+export function ActionLink({ href, children, arrow, variant = "quiet", className }: Props) {
+  if (isPending(href)) {
+    // Honest but quiet: reads as not-yet-connected, never as a broken button.
+    return (
+      <span
+        className={cn(
+          "inline-flex items-baseline gap-3 font-sans text-base text-muted md:text-lg",
+          className,
+        )}
+        title={`Link pending: ${href.pending}`}
+      >
+        {children}
+        <span className="font-mono text-label-sm lowercase tracking-normal text-technical">
+          pending
+        </span>
+      </span>
+    );
+  }
+
+  const glyphKind = arrow ?? arrowFor(href);
   const classes = cn(
     "group inline-flex items-baseline gap-2 font-sans text-base font-medium transition-colors md:text-lg",
     variant === "primary"
@@ -43,28 +66,14 @@ export function ActionLink({
       aria-hidden="true"
       className={cn(
         "font-mono text-accent transition-transform duration-200",
-        arrow === "down" && "group-hover:translate-y-0.5",
-        arrow === "right" && "group-hover:translate-x-1",
-        arrow === "out" && "group-hover:-translate-y-0.5 group-hover:translate-x-0.5",
+        glyphKind === "down" && "group-hover:translate-y-0.5",
+        glyphKind === "right" && "group-hover:translate-x-1",
+        glyphKind === "out" && "group-hover:-translate-y-0.5 group-hover:translate-x-0.5",
       )}
     >
-      {arrows[arrow]}
+      {arrows[glyphKind]}
     </span>
   );
-
-  if (isPending(href)) {
-    return (
-      <span
-        className={cn(classes, "cursor-not-allowed border-dashed text-muted hover:text-muted")}
-        title={`Link pending: ${href.pending}`}
-      >
-        {children}
-        <span className="font-mono text-label normal-case text-technical">
-          (link pending)
-        </span>
-      </span>
-    );
-  }
 
   if (isExternal(href)) {
     const newTab = href.startsWith("http");

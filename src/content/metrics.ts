@@ -26,6 +26,10 @@ export const metrics = {
     value: "$24M",
     label: "Annual spare-parts sales managed",
     note: "About $4M/year in spare-parts order management and $20M/year in project spare-parts order management.",
+    parts: [
+      { value: "~$4M/yr", label: "Spare-parts order management" },
+      { value: "~$20M/yr", label: "Project spare-parts order management" },
+    ],
   },
   bomProcessing: {
     id: "bomProcessing",
@@ -62,12 +66,12 @@ export type MetricId = keyof typeof metrics;
 export const getMetric = (id: string): Metric | undefined =>
   (metrics as Record<string, Metric>)[id];
 
-/** The order metrics land in the homepage Scale scene. */
-export const scaleSequence: MetricId[] = [
-  "projectWork",
-  "manufacturingOperation",
-  "spareParts",
-  "bomProcessing",
-  "purchaseOrders",
-  "softwareCost",
-];
+/**
+ * The homepage Scale scene. `scope` answers "how significant is this work?"
+ * (primary reveal — project scenes only reference these quietly);
+ * `improvement` shows what changed operationally.
+ */
+export const scaleMetrics: { scope: MetricId[]; improvement: MetricId[] } = {
+  scope: ["projectWork", "manufacturingOperation", "spareParts"],
+  improvement: ["bomProcessing", "purchaseOrders"],
+};

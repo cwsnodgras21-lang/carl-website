@@ -13,19 +13,26 @@
   --surface: #161613;
   --foreground: #ecebe5;
   --muted: #9b988e;
-  --border: #2b2a26;
+  --border: #403f39;
   --accent: #e3733d;
   --accent-muted: #4a2918;
   --technical: #86958f;
 
   /* Scene rhythm */
-  --gutter: 1rem;
+  --gutter: 1.25rem;
   --rail: 4.5rem;
+  /*
+   * Where the system rail sits, measured from the left edge of a scene's
+   * content column. Every rail segment, node and connection uses this, so
+   * the line stays continuous across scenes and breakpoints.
+   */
+  --rail-offset: calc(0.4375rem - var(--gutter));
 }
 
 @media (min-width: 768px) {
   :root {
     --gutter: 2rem;
+    --rail-offset: calc(0.75rem - var(--rail));
   }
 }
 
@@ -77,10 +84,14 @@
   --text-display-md--line-height: 1.08;
   --text-display-md--letter-spacing: -0.02em;
 
-  /* Technical annotation size */
-  --text-label: 0.72rem;
+  /* Technical annotation sizes. `label` is the default for categories and
+     system labels; `label-sm` is reserved for the rail and dense drawings. */
+  --text-label: 0.8rem;
   --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.12em;
+  --text-label--letter-spacing: 0.1em;
+  --text-label-sm: 0.7rem;
+  --text-label-sm--line-height: 1.3;
+  --text-label-sm--letter-spacing: 0.12em;
 
   --spacing-gutter: var(--gutter);
   --spacing-rail: var(--rail);
@@ -151,11 +162,96 @@
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
 
-/* Mechanical rail: a dimension line with tick marks. */
-@utility rail-ticks {
-  width: 9px;
-  margin-left: -4px;
-  background:
-    linear-gradient(var(--technical), var(--technical)) center / 1px 100% no-repeat,
-    repeating-linear-gradient(to bottom, var(--technical) 0 1px, transparent 1px 24px);
+/* ─── System rail ───────────────────────────────────────────────────────────
+ * One vertical line per scene, styled for the layer that scene represents.
+ * Patterns are background-image only, so `bg-background` can sit underneath
+ * when a segment has to mask the line behind it. Width is part of the style;
+ * the element is centred on --rail-offset with translateX(-50%).
+ */
+
+@utility rail-connection {
+  width: 1px;
+  background-image: linear-gradient(var(--muted), var(--muted));
+  opacity: 0.7;
+}
+
+/* Copper conductor. */
+@utility rail-electrical {
+  width: 2px;
+  background-image: linear-gradient(var(--accent), var(--accent));
+}
+
+/* Dimension line with tick marks. */
+@utility rail-mechanical {
+  width: 13px;
+  background-image:
+    linear-gradient(var(--technical), var(--technical)),
+    repeating-linear-gradient(to bottom, var(--technical) 0 1px, transparent 1px 14px);
+  background-size:
+    1px 100%,
+    100% 100%;
+  background-position: center, 0 0;
+  background-repeat: no-repeat;
+}
+
+/* Signal: long dashes. */
+@utility rail-controls {
+  width: 2px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--technical) 0 12px,
+    transparent 12px 20px
+  );
+}
+
+/* Data: discrete dots. */
+@utility rail-software {
+  width: 4px;
+  background-image: radial-gradient(circle, var(--technical) 1.6px, transparent 2px);
+  background-size: 4px 9px;
+  background-repeat: repeat-y;
+}
+
+/* Bus: the four disciplines merged into one double conductor. */
+@utility rail-enterprise {
+  width: 6px;
+  background-image:
+    linear-gradient(var(--technical), var(--technical)),
+    linear-gradient(var(--technical), var(--technical));
+  background-size:
+    1px 100%,
+    1px 100%;
+  background-position: left, right;
+  background-repeat: no-repeat;
+}
+
+/* Owned products: copper line carrying nodes. */
+@utility rail-products {
+  width: 7px;
+  background-image:
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(to bottom, var(--accent) 0 7px, transparent 7px);
+  background-size:
+    1px 100%,
+    7px 64px;
+  background-position:
+    center 0,
+    0 32px;
+  background-repeat: no-repeat, repeat-y;
+}
+
+/* AI inside rules: copper, dashed. */
+@utility rail-ai {
+  width: 2px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--accent) 0 8px,
+    transparent 8px 14px
+  );
+}
+
+/* The system simplifying back toward the original connection. */
+@utility rail-method {
+  width: 1px;
+  background-image: linear-gradient(var(--technical), var(--technical));
 }

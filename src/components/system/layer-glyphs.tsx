@@ -5,6 +5,9 @@ import type { SystemLayer } from "@/content/types";
  * box and the "wire" always enters at (0,60) and leaves at (200,60), so
  * glyphs can be chained into one continuous line — a wire becomes a
  * drawing becomes a ladder rung becomes a data path.
+ *
+ * Motion hooks: each glyph is [data-glyph=<layer>]; its through-wire is
+ * [data-signal], so one signal can later travel the whole strip.
  */
 
 export const GLYPH_W = 200;
@@ -15,22 +18,26 @@ type GlyphLayer = Extract<SystemLayer, "electrical" | "mechanical" | "controls" 
 const label = { fontSize: 9, letterSpacing: "0.1em" } as const;
 
 function Electrical() {
+  // NEMA 5-15R duplex, ground down: longer neutral slot on the left, shorter
+  // hot slot on the right, half-round ground opening below (flat edge toward
+  // the blades), centre mounting screw between the two faces.
   const outlet = (cy: number) => (
-    <g key={cy}>
-      <rect x={87} y={cy - 9} width={3.5} height={10} />
-      <rect x={109.5} y={cy - 10} width={3.5} height={12} />
-      <path d={`M97 ${cy + 5} h6 v3 a3 3 0 0 1 -6 0 z`} />
+    <g key={cy} data-outlet>
+      <rect x={83} y={cy - 15} width={34} height={30} rx={13} strokeWidth={1.1} />
+      <rect x={90} y={cy - 10} width={3} height={11} strokeWidth={1} />
+      <rect x={107} y={cy - 9} width={3} height={9} strokeWidth={1} />
+      <path d={`M96 ${cy + 5} h8 v2 a4 4 0 0 1 -8 0 z`} strokeWidth={1} />
     </g>
   );
   return (
     <g data-glyph="electrical">
-      <path d="M0 60 H60" className="stroke-accent" strokeWidth={2} />
-      <path d="M140 60 H200" className="stroke-accent" strokeWidth={2} />
-      <rect x={60} y={18} width={80} height={84} rx={6} strokeWidth={1.5} />
-      {outlet(42)}
-      {outlet(80)}
-      <circle cx={100} cy={61} r={2} />
-      <text x={60} y={12} className="fill-technical stroke-none font-mono" style={label}>
+      <path data-signal d="M0 60 H68" className="stroke-accent" strokeWidth={2} />
+      <path data-signal d="M132 60 H200" className="stroke-accent" strokeWidth={2} />
+      <rect x={68} y={12} width={64} height={96} rx={5} strokeWidth={1.5} />
+      {outlet(37)}
+      {outlet(83)}
+      <circle cx={100} cy={60} r={2.5} strokeWidth={1} />
+      <text x={68} y={7} className="fill-technical stroke-none font-mono" style={label}>
         15A · 120V
       </text>
     </g>
@@ -40,18 +47,21 @@ function Electrical() {
 function Mechanical() {
   return (
     <g data-glyph="mechanical">
-      <path d="M0 60 H200" strokeDasharray="14 4 2 4" strokeWidth={0.9} />
+      <path data-signal d="M0 60 H200" strokeDasharray="14 4 2 4" strokeWidth={0.9} />
       <path d="M100 20 V100" strokeDasharray="14 4 2 4" strokeWidth={0.9} />
       <rect x={50} y={32} width={100} height={56} strokeWidth={1.75} />
       <circle cx={100} cy={60} r={14} strokeWidth={1.5} />
-      {/* dimension */}
+      {/* overall width dimension */}
       <path d="M50 30 V12 M150 30 V12" strokeWidth={0.75} />
       <path d="M50 16 H150" strokeWidth={0.75} />
       <path d="M50 16 l6 -2.5 v5 z M150 16 l-6 -2.5 v5 z" className="fill-technical" stroke="none" />
       <text x={100} y={10} textAnchor="middle" className="fill-technical stroke-none font-mono" style={label}>
         4.000
       </text>
-      <text x={120} y={108} className="fill-technical stroke-none font-mono" style={label}>
+      {/* hole callout: leader from the diameter note to the hole edge */}
+      <path d="M109.9 69.9 L130 100 H136" strokeWidth={0.75} />
+      <path d="M109.9 69.9 L115.6 72.9 L111.8 76.1 Z" className="fill-technical" stroke="none" />
+      <text x={139} y={103} className="fill-technical stroke-none font-mono" style={label}>
         Ø1.125
       </text>
     </g>
@@ -62,8 +72,8 @@ function Controls() {
   return (
     <g data-glyph="controls">
       <path d="M8 18 V102 M192 18 V102" strokeWidth={1.75} />
-      <path d="M0 60 H8 M192 60 H200" />
-      <path d="M8 60 H46 M60 60 H86 M100 60 H140 M166 60 H192" />
+      <path data-signal d="M0 60 H8 M192 60 H200" />
+      <path data-signal d="M8 60 H46 M60 60 H86 M100 60 H140 M166 60 H192" />
       {/* normally open contact */}
       <path d="M46 48 V72 M60 48 V72" strokeWidth={1.5} />
       {/* normally closed contact */}
@@ -88,7 +98,7 @@ function Controls() {
 function Software() {
   return (
     <g data-glyph="software">
-      <path d="M0 60 H28 M56 60 H76 V32 H96 M76 60 V88 H96 M124 32 H146 V60 M124 88 H146 V60 M178 60 H200" />
+      <path data-signal d="M0 60 H28 M56 60 H76 V32 H96 M76 60 V88 H96 M124 32 H146 V60 M124 88 H146 V60 M178 60 H200" />
       <rect x={28} y={48} width={28} height={24} strokeWidth={1.5} />
       <rect x={96} y={22} width={28} height={20} strokeWidth={1.25} />
       <rect x={96} y={78} width={28} height={20} strokeWidth={1.25} />

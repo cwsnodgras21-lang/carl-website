@@ -42,6 +42,8 @@ export type Metric = {
   qualifier?: string;
   /** Extra context that must travel with the number. */
   note?: string;
+  /** Components that make up the total, shown attached to it. */
+  parts?: { value: string; label: string }[];
 };
 
 /* ─── Diagrams ──────────────────────────────────────────────────────────────
@@ -140,7 +142,8 @@ export type SystemLayer =
   | "software"
   | "enterprise"
   | "products"
-  | "ai";
+  | "ai"
+  | "method";
 
 export type Milestone = {
   period: string;
