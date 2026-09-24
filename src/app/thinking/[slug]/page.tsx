@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import { notFound } from "next/navigation";
-import { getArticle, publishedArticles } from "@/content/articles";
+import { articleHref, getArticle, publishedArticles } from "@/content/articles";
 import { isPending } from "@/content/types";
 import { ActionLink } from "@/components/ui/action-link";
 import { Container } from "@/components/ui/container";
@@ -16,7 +17,9 @@ export function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/thinking/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const article = getArticle(slug);
-  return article ? { title: article.title, description: article.summary } : {};
+  return article
+    ? pageMetadata({ title: article.title, description: article.summary, path: articleHref(article.slug) })
+    : {};
 }
 
 export default async function ArticlePage(props: PageProps<"/thinking/[slug]">) {

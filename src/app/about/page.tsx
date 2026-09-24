@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import { about } from "@/content/about";
 import { layers, milestones } from "@/content/career";
 import { hasContact } from "@/content/site";
@@ -7,11 +8,11 @@ import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
 import { Label } from "@/components/ui/typography";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
-  description:
-    "Electrical, mechanical, operations, controls, software, AI — how Carl Snodgrass came to build systems.",
-};
+  description: "Electrical, mechanical, operations, controls, software, AI — how Carl Snodgrass came to build systems.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

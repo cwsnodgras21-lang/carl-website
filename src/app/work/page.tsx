@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import Link from "next/link";
 import { getMetric } from "@/content/metrics";
 import { projectHref, projects } from "@/content/projects";
@@ -8,10 +9,11 @@ import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
 import { Body, Label } from "@/components/ui/typography";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Work",
   description: "Systems Carl Snodgrass has built — enterprise, manufacturing, customer operations, and NolTurn products.",
-};
+  path: "/work",
+});
 
 const groups: { id: string; label: string; note: string; owner: Project["owner"] }[] = [
   {
