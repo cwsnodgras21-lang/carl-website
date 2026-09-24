@@ -33,7 +33,7 @@ const scenes: Record<string, Scene> = {
   nolturn,
   "software-factory": softwareFactory,
   process,
-  // Thinking is deliberately still: the page breathes here.
+  // Demos is deliberately still: its motion is in the demos themselves.
   contact: closing,
 };
 

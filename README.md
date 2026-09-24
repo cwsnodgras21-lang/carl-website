@@ -21,6 +21,7 @@ npm run content:pending  # list content still waiting on Carl
 | `src/components/system/` | Shared visual language: scene rail, connection, layer drawings, system diagrams, metrics, screenshot slots. |
 | `src/components/ui/` | Typography, links, containers. |
 | `src/lib/motion.ts` | Motion levels and reduced-motion checks. |
+| `src/demos/` | **Demo logic** for `/demos`: synthetic data and the real transformations (BOM, PO, system design). No DOM, deterministic. Copy lives in `src/content/demos.ts`; UI in `src/components/demos/`. |
 | `src/motion/` | **Narrative motion.** Scroll controller, helpers, one module per scene. Loaded lazily on the homepage only; never with reduced motion. |
 
 ## Adding content
@@ -36,6 +37,9 @@ Then commit and deploy.
 One signal travels the page: the hero powers on, the signal runs through the four
 disciplines, they converge into the system, the systems come online, and the circuit
 closes at the end.
+
+The demos on `/demos` use the same Anime.js vocabulary, but only in response to a button
+press (`src/motion/demos.ts`, loaded on first use, never with reduced motion).
 
 - `src/motion/runtime.ts` maps section ids to scene modules in `src/motion/scenes/`.
 - `src/motion/controller.ts` maps scroll position onto Anime.js timelines (one passive

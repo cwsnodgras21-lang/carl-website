@@ -27,7 +27,7 @@ export const links = {
 
 export const navigation: { label: string; href: string }[] = [
   { label: "Work", href: "/work" },
-  { label: "Thinking", href: "/thinking" },
+  { label: "Demos", href: "/demos" },
   { label: "About", href: "/about" },
   { label: "Let's Talk", href: "/#contact" },
 ];
