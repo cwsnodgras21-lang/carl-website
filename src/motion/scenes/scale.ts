@@ -7,7 +7,7 @@ import type { Scene, SceneContext } from "../types";
  * The four discipline strands draw in, in the order Carl picked them up,
  * and meet at one junction. Only then does the system line come online and
  * what it produced resolves, one figure at a time:
- *   $500M+ → $150M → $24M → the two operational transformations.
+ *   $500M+ → $150M → $20M → the two operational transformations.
  * Figures resolve behind a moving edge; they never count up. For a
  * transformation, the old value arrives first and stays, the connector
  * carries it, then the new value lands.

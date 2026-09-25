@@ -7,7 +7,7 @@ import type { Scene } from "../types";
  * The sources start apart. Their paths draw toward the support engineer
  * and meet at one junction; only then does the engineer's "one screen"
  * state switch on. The workflow continues to the ticket and branches to
- * warranty and spares. The $24M context activates only after the spares
+ * warranty and spares. The $20M context activates only after the spares
  * branch has resolved, through its leader line.
  */
 export const customerOperations: Scene = ({ root, controller }) => {
