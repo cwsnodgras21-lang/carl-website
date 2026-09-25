@@ -65,7 +65,7 @@ export function NolTurnScene() {
                   See how it works
                 </ActionLink>
               </div>
-              {screenshot && <ScreenshotSlot image={screenshot} />}
+              {screenshot && <ScreenshotSlot image={screenshot} className="lg:justify-self-center" />}
             </article>
           )}
         </div>

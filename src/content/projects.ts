@@ -148,13 +148,15 @@ export const projects: Project[] = [
     slug: "clinic-inventory",
     title: "Inventory",
     category: "NolTurn",
-    status: pending("Product status (live with the clinic? in pilot?)"),
+    status: "In use at the clinic since September 2026",
     summary: "Inventory management built for a small medical clinic.",
     metrics: [],
     technologies: pending("Stack"),
-    problem: pending("What the clinic was doing before"),
+    problem:
+      "When I started, the clinic ran its inventory on a three-column Google Sheet. Nobody had a clear picture of what was on hand or where it was, and keeping the sheet current ate up a lot of time.",
     context: pending("Why it mattered to the clinic"),
-    system: "Inventory built around the people actually using it.",
+    system:
+      "I built them an inventory system that tracks every supply by location (room, cabinet, shelf, bin), flags items that drop below their reorder point, tracks expiration dates, and keeps a full history of every item received, used or moved. It's been in use at the clinic since September 2026.",
     capabilities: [
       "Current inventory",
       "Medication stock",
@@ -170,8 +172,11 @@ export const projects: Project[] = [
     learned: pending("What I learned — short and specific"),
     images: [
       {
-        src: pending("Sanitized product screenshot — no patient data"),
-        alt: "Inventory dashboard",
+        // Top of the live dashboard, captured on a phone. No patient data;
+        // cropped above the activity feed so no staff names appear.
+        src: "/work/clinic-inventory-dashboard.png",
+        alt: "Inventory dashboard: quick actions, and counts of expired, expiring, out-of-stock and reorder items",
+        phone: { width: 804, height: 1433 },
       },
     ],
     featured: true,
