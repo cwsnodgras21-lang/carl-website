@@ -23,12 +23,13 @@ export const metrics = {
   },
   spareParts: {
     id: "spareParts",
-    value: "$24M",
+    value: "$20M",
     label: "Annual spare-parts sales managed",
-    note: "About $4M/year in spare-parts order management and $20M/year in project spare-parts order management.",
+    // Annualised from 9 months: $4M spare parts + $11M project spares.
+    note: "About $5M/year in spare-parts order management and $15M/year in project spare-parts order management.",
     parts: [
-      { value: "~$4M/yr", label: "Spare-parts order management" },
-      { value: "~$20M/yr", label: "Project spare-parts order management" },
+      { value: "~$5M/yr", label: "Spare-parts order management" },
+      { value: "~$15M/yr", label: "Project spare-parts order management" },
     ],
   },
   bomProcessing: {
