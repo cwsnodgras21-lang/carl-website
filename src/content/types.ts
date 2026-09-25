@@ -88,6 +88,11 @@ export type ProjectImage = {
   src: Maybe<string>;
   alt: string;
   caption?: string;
+  /**
+   * A phone screenshot: shown at its own proportions in a narrow frame
+   * instead of the default 16:10 crop. Needs the image's pixel size.
+   */
+  phone?: { width: number; height: number };
 };
 
 export type Project = {
