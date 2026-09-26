@@ -9,11 +9,11 @@
 
 :root {
   /* Default direction: industrial dark neutral with a single copper accent. */
-  --background: #0e0e0c;
-  --surface: #161613;
+  --background: #1e1e1b;
+  --surface: #272622;
   --foreground: #ecebe5;
   --muted: #9b988e;
-  --border: #403f39;
+  --border: #4c4b44;
   --accent: #e3733d;
   --accent-muted: #4a2918;
   --technical: #86958f;

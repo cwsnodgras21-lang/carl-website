@@ -13,10 +13,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const color = {
-  background: "#0e0e0c",
+  background: "#1e1e1b",
   foreground: "#ecebe5",
   muted: "#9b988e",
-  border: "#403f39",
+  border: "#4c4b44",
   accent: "#e3733d",
   technical: "#86958f",
 };

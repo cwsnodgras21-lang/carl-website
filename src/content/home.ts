@@ -101,13 +101,6 @@ export const quickWins = {
       after: {},
     },
     {
-      id: "salesforce",
-      label: "Salesforce",
-      before: { text: "Salesforce" },
-      via: "ZoomInfo + Sales Engagement integrations, campaign infrastructure, supporting configuration",
-      after: { value: "Connected and live." },
-    },
-    {
       id: "custom",
       label: "Custom development",
       metric: "customCodePages",
