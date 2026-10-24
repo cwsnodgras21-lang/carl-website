@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/typography";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
-  description: "Electrical, mechanical, operations, controls, software, AI — how Carl Snodgrass came to build systems.",
+  description: "How Carl Snodgrass came to combine mechanical engineering, industrial controls, and enterprise software.",
   path: "/about",
 });
 

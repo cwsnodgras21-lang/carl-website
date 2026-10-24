@@ -6,7 +6,7 @@ export function ProcessScene() {
   return (
     <SceneShell
       id="process"
-      index="09"
+      index="05"
       layer="method"
       railLabel="Method"
       labelledBy="process-title"

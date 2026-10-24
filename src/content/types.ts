@@ -29,24 +29,6 @@ export type SiteLink = {
   href: Maybe<string>;
 };
 
-/* ─── Metrics ───────────────────────────────────────────────────────────── */
-
-export type Metric = {
-  id: string;
-  /** Single value, e.g. "$500M+". Omit when the metric is a before/after. */
-  value?: string;
-  /** Before/after transformation, e.g. "~1 day" → "seconds". */
-  before?: string;
-  after?: string;
-  label: string;
-  /** Qualifier shown alongside the value, e.g. "Estimate". */
-  qualifier?: string;
-  /** Extra context that must travel with the number. */
-  note?: string;
-  /** Components that make up the total, shown attached to it. */
-  parts?: { value: string; label: string }[];
-};
-
 /* ─── Diagrams ──────────────────────────────────────────────────────────────
  * A conceptual system diagram. `columns` read left→right on desktop and
  * top→bottom on mobile, so one definition drives both geometries.
@@ -70,18 +52,9 @@ export type SystemDiagram = {
 
 /* ─── Projects ──────────────────────────────────────────────────────────── */
 
-/**
- * abstracted — employer work. Sanitized diagrams, workflows, metrics only.
- *              Never screenshots, internal names, customers or internals.
- * public-ui  — Carl/NolTurn-owned products. Real sanitized UI may be shown.
- */
-export type VisualMode = "abstracted" | "public-ui";
+export type VisualMode = "public-ui";
 
-export type ProjectCategory =
-  | "Enterprise Systems"
-  | "Manufacturing"
-  | "Customer Operations"
-  | "NolTurn";
+export type ProjectCategory = "NolTurn";
 
 export type ProjectImage = {
   /** Path under /public, or Pending until a real sanitized asset exists. */
@@ -102,8 +75,6 @@ export type Project = {
   status: Maybe<string>;
   /** One or two sentences. Used on the work index and in scenes. */
   summary: string;
-  /** Ids from src/content/metrics.ts. */
-  metrics: string[];
   technologies: Maybe<string[]>;
   problem: Maybe<string>;
   context: Maybe<string>;
@@ -118,8 +89,7 @@ export type Project = {
   images: ProjectImage[];
   featured: boolean;
   visualMode: VisualMode;
-  /** Owned by NolTurn rather than an employer. */
-  owner: "employer" | "nolturn";
+  owner: "nolturn";
 };
 
 /* ─── Writing ───────────────────────────────────────────────────────────── */

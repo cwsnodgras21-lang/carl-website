@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 import { MotionRoot } from "@/components/motion/motion-root";
+import { CapabilitiesScene } from "@/components/scenes/capabilities-scene";
 import { ClosingScene } from "@/components/scenes/closing-scene";
-import { CustomerOperationsScene } from "@/components/scenes/customer-operations-scene";
-import { DemosScene } from "@/components/scenes/demos-scene";
 import { HeroScene } from "@/components/scenes/hero-scene";
 import { JourneyScene } from "@/components/scenes/journey-scene";
-import { ManufacturingScene } from "@/components/scenes/manufacturing-scene";
 import { NolTurnScene } from "@/components/scenes/nolturn-scene";
 import { ProcessScene } from "@/components/scenes/process-scene";
-import { ProjectExecutionScene } from "@/components/scenes/project-execution-scene";
-import { QuickWinsScene } from "@/components/scenes/quick-wins-scene";
-import { ScaleScene } from "@/components/scenes/scale-scene";
 import { contactLinks, site } from "@/content/site";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -31,8 +26,8 @@ const person = {
 
 /**
  * One system, assembled scene by scene: a single connection becomes
- * electrical, mechanical, controls, software, enterprise, product and AI
- * layers — then simplifies back to the original connection.
+ * electrical, mechanical, controls, software and AI layers — then
+ * simplifies back to the original connection.
  */
 export default function HomePage() {
   return (
@@ -44,14 +39,9 @@ export default function HomePage() {
       />
       <HeroScene />
       <JourneyScene />
-      <ScaleScene />
-      <ProjectExecutionScene />
-      <ManufacturingScene />
-      <CustomerOperationsScene />
-      <QuickWinsScene />
+      <CapabilitiesScene />
       <NolTurnScene />
       <ProcessScene />
-      <DemosScene />
       <ClosingScene />
       <MotionRoot />
     </>

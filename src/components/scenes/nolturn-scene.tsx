@@ -5,22 +5,19 @@ import { ScreenshotSlot, suppliedImages } from "@/components/system/screenshot-s
 import { ActionLink } from "@/components/ui/action-link";
 import { Body, Display, Label } from "@/components/ui/typography";
 import { cn } from "@/lib/cn";
-import { GovernedPipeline } from "./software-factory-visual";
 
 /**
- * The portfolio's commercial turn. Visual language moves from abstracted
- * architecture (employer work) to real product surfaces (owned work).
+ * Independent NolTurn work, kept visibly separate from employment.
  */
 export function NolTurnScene() {
   const inventory = getProject(copy.inventory.slug);
-  const factory = getProject(copy.factory.slug);
   const screenshot = inventory ? suppliedImages(inventory.images)[0] : undefined;
 
   return (
     <>
       <SceneShell
         id="nolturn"
-        index="08"
+        index="04"
         layer="products"
         railLabel="Products"
         labelledBy="nolturn-title"
@@ -71,47 +68,6 @@ export function NolTurnScene() {
         </div>
       </SceneShell>
 
-      {factory?.workflow && (
-        <SceneShell
-          id="software-factory"
-          index="08.2"
-          layer="ai"
-          railLabel="AI"
-          labelledBy="factory-title"
-        >
-          <article className="pb-24 pt-16 md:pb-36 md:pt-24">
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-              <div className="lg:col-span-7">
-                <Label>Product · {factory.title}</Label>
-                <h3
-                  id="factory-title"
-                  className="mt-6 font-display text-display-lg font-semibold [font-stretch:112%]"
-                >
-                  {copy.factory.statement[0]}
-                  <br />
-                  <span className="text-accent">{copy.factory.statement[1]}</span>
-                </h3>
-              </div>
-              <Body className="text-lg md:text-lg lg:col-span-4 lg:col-start-9">{copy.factory.body}</Body>
-            </div>
-
-            <div className="mt-14 md:mt-20">
-              <GovernedPipeline
-                stages={factory.workflow.columns.flat()}
-                governance={factory.capabilities ?? []}
-                title={factory.workflow.title}
-              />
-            </div>
-
-            <div className="mt-16 flex flex-wrap gap-x-10 gap-y-5">
-              <ActionLink href={copy.cta.href} variant="primary">
-                {copy.cta.label}
-              </ActionLink>
-              <ActionLink href={projectHref(factory.slug)}>About the Software Factory</ActionLink>
-            </div>
-          </article>
-        </SceneShell>
-      )}
     </>
   );
 }

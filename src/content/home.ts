@@ -23,106 +23,52 @@ export const journey = {
   closing: ["The tools changed.", "The way I solve problems didn't."],
 };
 
-export const scale = {
-  label: "Scale",
-};
-
-export const projectExecution = {
-  category: "Enterprise Systems",
-  statement: "It started as a Procore replacement.",
-  turn: "It didn't stay that way.",
-  body: "What began as a tool for managing field execution grew into a connected project platform spanning quality, materials, engineering, procurement, and operational workflows.",
-  slug: "project-execution-platform",
-};
-
-export const manufacturing = {
-  category: "Manufacturing",
-  statement: "Excel wasn't a manufacturing system.",
-  turn: "So I built one.",
-  body: "A manufacturing platform spanning engineering intake, production control, shop-floor execution, part traceability, operational dashboards, and shipping.",
-  slug: "manufacturing-platform",
-};
-
-export const customerOperations = {
-  category: "Customer Operations",
-  statement: "One screen instead of ten places to look.",
-  body: "I built systems that bring drawings, PLC information, manuals, support tickets, warranty management, and spare-parts operations together around the customer.",
-  slug: "customer-operations",
-};
-
 /**
- * A quick win is a transformation: old process → intervention → new process.
- * Values come from metrics where one exists; the words around them are the
- * supplied descriptions, not new claims.
+ * General professional capabilities. Skills only: no employer systems,
+ * figures, vendors replaced, or outcomes. Keep it that way.
  */
-export type QuickWinStage = {
-  /** Headline value for this side of the transformation. */
-  value?: string;
-  /** What it was / what it became, in plain words. */
-  text?: string;
-};
-
-export type QuickWin = {
-  id: string;
-  label: string;
-  /** Metric the values come from (before/after or value). */
-  metric?: string;
-  before: QuickWinStage;
-  /** The intervention — what was built. */
-  via: string;
-  after: QuickWinStage;
-};
-
-export const quickWins = {
-  heading: "Not every useful system needs to be huge.",
-  items: [
+export const capabilities = {
+  heading: "What I bring.",
+  groups: [
     {
-      id: "bom",
-      label: "BOM processing",
-      metric: "bomProcessing",
-      before: { text: "Tens of thousands of raw engineering lines" },
-      via: "Aggregation + warehouse inventory check",
-      after: { text: "Actionable material demand" },
+      title: "Engineering",
+      items: ["Mechanical and industrial engineering", "Industrial equipment and PLC troubleshooting"],
     },
     {
-      id: "po",
-      label: "Purchase orders",
-      metric: "purchaseOrders",
-      before: { text: "Purchase-order preparation" },
-      via: "Safe Sage import generated directly from Quickbase",
-      after: {},
+      title: "Software",
+      items: [
+        "Enterprise application development",
+        "JavaScript, HTML, CSS, REST APIs, and webhooks",
+        "Quickbase development",
+      ],
     },
     {
-      id: "reuse",
-      label: "Material reuse",
-      metric: "materialReuse",
-      before: { text: "New project demand" },
-      via: "Check available warehouse inventory before buying",
-      after: {},
+      title: "Data and architecture",
+      items: [
+        "Relational data modeling",
+        "PostgreSQL and Supabase, from independent work",
+        "Application architecture and technical problem-solving",
+      ],
     },
     {
-      id: "custom",
-      label: "Custom development",
-      metric: "customCodePages",
-      before: { value: "~$6,000", text: "Vendor quote for a single code page" },
-      via: "Built internally",
-      after: { text: "Custom code pages" },
+      title: "Practice",
+      items: [
+        "Requirements discovery",
+        "Business process automation",
+        "Technical leadership and developer enablement",
+        "AI-assisted software development",
+      ],
     },
-  ] satisfies QuickWin[],
+  ],
 };
 
 export const nolturn = {
   label: "NolTurn",
   statement: "I build outside of work, too.",
-  body: "NolTurn is where I experiment, build products, and turn real business problems into custom software.",
+  body: "NolTurn is my independent business, separate from my employment. It's where I build products and turn real business problems into custom software.",
   inventory: {
     slug: "clinic-inventory",
     headline: "Inventory built around the people actually using it.",
-  },
-  factory: {
-    slug: "software-factory",
-    statement: ["AI can build fast.", "Fast still needs rules."],
-    body: "I built a governed development system around AI-assisted coding with architecture decisions, standards, testing, security, documentation, and automated guardrails.",
   },
   cta: { label: "Explore NolTurn", href: "/work#nolturn" },
 };

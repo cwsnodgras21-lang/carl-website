@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/work",
     ...projects.map((project) => projectHref(project.slug)),
-    "/demos",
     "/about",
     ...(publishedArticles.length > 0 ? ["/thinking"] : []),
     ...publishedArticles.map((article) => articleHref(article.slug)),

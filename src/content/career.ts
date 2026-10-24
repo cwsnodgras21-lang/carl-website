@@ -27,14 +27,14 @@ export const milestones: Milestone[] = [
   },
   {
     period: "2019–2025",
-    title: "Customer Support + Controls",
-    body: "Supported equipment after it reached the real world, troubleshooting mechanical systems, controls, PLCs, and the processes around them.",
+    title: "Industrial Controls Troubleshooting",
+    body: "Troubleshot industrial equipment after it reached the real world: mechanical systems, controls, and PLCs.",
     layer: "controls",
   },
   {
     period: "2025–Present",
     title: "Software",
-    body: "Started building the tools I wished we'd had all along.",
+    body: "Moved into enterprise application development and architecture, and began building software independently.",
     layer: "software",
   },
 ];

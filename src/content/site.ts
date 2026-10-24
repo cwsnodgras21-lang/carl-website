@@ -4,9 +4,9 @@ export const site = {
   name: "Carl Snodgrass",
   statement: "I turn ideas into working systems.",
   summary:
-    "I build software around how businesses actually work, combining an engineering background with years spent in operations, customer support, controls, and enterprise systems.",
+    "A multidisciplinary engineer combining mechanical engineering, industrial controls troubleshooting, enterprise software development, and application architecture.",
   description:
-    "Carl Snodgrass builds software around how businesses actually work — combining an engineering background with years in operations, customer support, controls, and enterprise systems.",
+    "Carl Snodgrass is a multidisciplinary engineer combining mechanical engineering, industrial controls troubleshooting, enterprise software development, and application architecture.",
   url: "https://carl.nolturn.io",
 } as const;
 
@@ -37,7 +37,6 @@ export const hasContact = contactLinks.length > 0;
 
 export const navigation: { label: string; href: string }[] = [
   { label: "Work", href: "/work" },
-  { label: "Demos", href: "/demos" },
   { label: "About", href: "/about" },
   ...(hasContact ? [{ label: "Let's Talk", href: "/#contact" }] : []),
 ];
