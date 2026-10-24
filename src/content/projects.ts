@@ -11,14 +11,13 @@ export const projects: Project[] = [
     slug: "clinic-inventory",
     title: "Inventory",
     category: "NolTurn",
-    status: "In use at the clinic since September 2026",
-    summary: "Inventory management built for a small medical clinic.",
+    status: pending("Current status"),
+    summary: "Inventory management software for tracking supplies, stock levels, and expiration dates.",
     technologies: pending("Stack"),
-    problem:
-      "When I started, the clinic ran its inventory on a three-column Google Sheet. Nobody had a clear picture of what was on hand or where it was, and keeping the sheet current ate up a lot of time.",
+    problem: pending("Problem statement, written without describing the client's prior process"),
     context: pending("Why it mattered to the clinic"),
     system:
-      "I built them an inventory system that tracks every supply by location (room, cabinet, shelf, bin), flags items that drop below their reorder point, tracks expiration dates, and keeps a full history of every item received, used or moved. It's been in use at the clinic since September 2026.",
+      "I designed and built an inventory system that tracks every supply by location (room, cabinet, shelf, bin), flags items that reach their reorder point, tracks expiration dates, and keeps a full history of every item received, used, or moved.",
     capabilities: [
       "Current inventory",
       "Medication stock",
