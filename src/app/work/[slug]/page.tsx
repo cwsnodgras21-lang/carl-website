@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/page-metadata";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { getMetric } from "@/content/metrics";
 import { getProject, projectHref, projects } from "@/content/projects";
 import { isPending } from "@/content/types";
-import { MetricInline } from "@/components/system/metric";
 import { ScreenshotSlot, suppliedImages } from "@/components/system/screenshot-slot";
 import { SystemDiagram } from "@/components/system/system-diagram";
 import { ActionLink } from "@/components/ui/action-link";
@@ -53,7 +51,6 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
   const project = getProject(slug);
   if (!project) notFound();
 
-  const metrics = project.metrics.flatMap((id) => getMetric(id) ?? []);
   const images = project.visualMode === "public-ui" ? suppliedImages(project.images) : [];
   const technologies = isPending(project.technologies) ? null : project.technologies;
 
@@ -96,20 +93,7 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
       )}
     </>,
   );
-  add(
-    "Impact",
-    metrics.length || !isPending(project.outcome),
-    <>
-      {metrics.length > 0 && (
-        <div className="grid gap-8 sm:grid-cols-2">
-          {metrics.map((metric) => (
-            <MetricInline key={metric.id} metric={metric} />
-          ))}
-        </div>
-      )}
-      <MaybeText value={project.outcome} className={cn(metrics.length > 0 && "mt-8")} />
-    </>,
-  );
+  add("Outcome", !isPending(project.outcome), <MaybeText value={project.outcome} />);
   add(
     "Technical details",
     technologies || !isPending(project.technicalNotes),
@@ -136,9 +120,7 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
       <PageHeader label={project.category} title={project.title}>
         <Body className="mt-8">{project.summary}</Body>
         <p className="mt-8 font-mono text-label uppercase text-technical">
-          {project.visualMode === "abstracted"
-            ? "Employer work · sanitized conceptual view"
-            : "NolTurn product"}
+          NolTurn product
         </p>
       </PageHeader>
 

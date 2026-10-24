@@ -13,7 +13,7 @@ npm run content:pending  # list content still waiting on Carl
 
 | Path | What |
 | --- | --- |
-| `src/content/` | **All copy and data.** Projects, metrics, articles, career, homepage copy, links. No CMS. |
+| `src/content/` | **All copy and data.** Projects, articles, career, homepage copy, links. No CMS. |
 | `src/content/types.ts` | Content model. `pending("…")` marks a fact that hasn't been supplied; it renders as a visible annotation. |
 | `src/app/globals.css` | Design tokens: semantic colors, type scale, reduced-motion rules. Change the look here. |
 | `src/app/layout.tsx` | Font faces for the three typographic voices (display / sans / mono). |
@@ -21,14 +21,13 @@ npm run content:pending  # list content still waiting on Carl
 | `src/components/system/` | Shared visual language: scene rail, connection, layer drawings, system diagrams, metrics, screenshot slots. |
 | `src/components/ui/` | Typography, links, containers. |
 | `src/lib/motion.ts` | Motion levels and reduced-motion checks. |
-| `src/demos/` | **Demo logic** for `/demos`: synthetic data and the real transformations (BOM, PO, system design). No DOM, deterministic. Copy lives in `src/content/demos.ts`; UI in `src/components/demos/`. |
 | `src/motion/` | **Narrative motion.** Scroll controller, helpers, one module per scene. Loaded lazily on the homepage only; never with reduced motion. |
 
 ## Adding content
 
-- **Project:** append to `src/content/projects.ts`. `/work` and `/work/[slug]` pick it up. Employer work uses `visualMode: "abstracted"`, meaning sanitized diagrams and metrics only, with no names, screenshots, or internal details.
+- **Project:** append to `src/content/projects.ts`. `/work` and `/work/[slug]` pick it up. Independent NolTurn work only. Do not publish work built for or during employment, even anonymized or with changed figures.
 - **Article:** append to `src/content/articles.ts`. Only publish writing that exists.
-- **Metric:** add to `src/content/metrics.ts` and reference it by id. Don't restate a number anywhere else.
+- **Numbers:** the site publishes no operational, financial, or scale figures. Don't add any derived from employer work.
 
 Then commit and deploy.
 
@@ -37,9 +36,6 @@ Then commit and deploy.
 One signal travels the page: the hero powers on, the signal runs through the four
 disciplines, they converge into the system, the systems come online, and the circuit
 closes at the end.
-
-The demos on `/demos` use the same Anime.js vocabulary, but only in response to a button
-press (`src/motion/demos.ts`, loaded on first use, never with reduced motion).
 
 - `src/motion/runtime.ts` maps section ids to scene modules in `src/motion/scenes/`.
 - `src/motion/controller.ts` maps scroll position onto Anime.js timelines (one passive

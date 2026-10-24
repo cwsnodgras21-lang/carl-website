@@ -3,14 +3,8 @@ import { ScrollController } from "./controller";
 import { restoreAll } from "./helpers";
 import { journey } from "./scenes/journey";
 import { closing } from "./scenes/closing";
-import { customerOperations } from "./scenes/customer-operations";
-import { manufacturing } from "./scenes/manufacturing";
 import { nolturn } from "./scenes/nolturn";
 import { process } from "./scenes/process";
-import { projectExecution } from "./scenes/project-execution";
-import { quickWins } from "./scenes/quick-wins";
-import { scale } from "./scenes/scale";
-import { softwareFactory } from "./scenes/software-factory";
 import { hero } from "./scenes/hero";
 import type { Scene, SceneContext } from "./types";
 
@@ -25,15 +19,8 @@ import type { Scene, SceneContext } from "./types";
 const scenes: Record<string, Scene> = {
   top: hero,
   journey,
-  scale,
-  work: projectExecution,
-  manufacturing,
-  "customer-operations": customerOperations,
-  "quick-wins": quickWins,
   nolturn,
-  "software-factory": softwareFactory,
   process,
-  // Demos is deliberately still: its motion is in the demos themselves.
   contact: closing,
 };
 

@@ -10,7 +10,7 @@ export function ClosingScene() {
   return (
     <SceneShell
       id="contact"
-      index="11"
+      index="06"
       layer="connection"
       railLabel="Connection"
       labelledBy="closing-title"

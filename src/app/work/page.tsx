@@ -1,31 +1,23 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/page-metadata";
 import Link from "next/link";
-import { getMetric } from "@/content/metrics";
 import { projectHref, projects } from "@/content/projects";
 import type { Project } from "@/content/types";
-import { MetricFigure } from "@/components/system/metric";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
 import { Body, Label } from "@/components/ui/typography";
 
 export const metadata: Metadata = pageMetadata({
   title: "Work",
-  description: "Systems Carl Snodgrass has built — enterprise, manufacturing, customer operations, and NolTurn products.",
+  description: "Independent software work by Carl Snodgrass through NolTurn.",
   path: "/work",
 });
 
 const groups: { id: string; label: string; note: string; owner: Project["owner"] }[] = [
   {
-    id: "systems",
-    label: "Enterprise & operations systems",
-    note: "Shown as sanitized, conceptual architecture.",
-    owner: "employer",
-  },
-  {
     id: "nolturn",
     label: "NolTurn",
-    note: "Products I own and build outside of work.",
+    note: "Independent work, separate from my employment.",
     owner: "nolturn",
   },
 ];
@@ -47,18 +39,6 @@ function ProjectRow({ project }: { project: Project }) {
           <span className="mt-3 block max-w-2xl text-base leading-relaxed text-muted">
             {project.summary}
           </span>
-          {project.metrics.length > 0 && (
-            <span className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted">
-              {project.metrics.map((id) => {
-                const metric = getMetric(id);
-                return metric ? (
-                  <span key={id}>
-                    <MetricFigure metric={metric} className="font-semibold text-foreground" /> {metric.label}
-                  </span>
-                ) : null;
-              })}
-            </span>
-          )}
         </span>
         <span aria-hidden="true" className="font-mono text-accent transition-transform group-hover:translate-x-1 md:pt-2">
           →
@@ -71,11 +51,8 @@ function ProjectRow({ project }: { project: Project }) {
 export default function WorkPage() {
   return (
     <>
-      <PageHeader label="Work" title="Systems I've built.">
-        <Body className="mt-8">
-          Employer work is shown as conceptual architecture with measured outcomes. NolTurn work is
-          mine, so it can show the real thing.
-        </Body>
+      <PageHeader label="Work" title="Independent work.">
+        <Body className="mt-8">Products I build through NolTurn, my independent business.</Body>
       </PageHeader>
       <Container className="pb-32">
         {groups.map((group) => (
